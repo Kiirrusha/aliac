@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  border: 1px solid;
+}
+
+.header {
+  text-align: center;
+}
+
+.teams {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.team,
+.spectators {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  padding: 12px;
+
+  border: 1px solid;
+}
+
+.player,
+.spectator {
+  border-bottom: 1px solid;
+}

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Login } from "./Login";
-import { Room } from "./Room";
+import { Room } from "./Room/Room";
 import { Home } from "./Home/Home";
 import { Layout } from "./Layout/Layout";
 
