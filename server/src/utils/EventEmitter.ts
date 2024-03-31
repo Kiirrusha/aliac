@@ -1,21 +1,25 @@
-type EventObj = Record<string, any>
+type EventObj = Record<string, any>;
 
-type EventListenerBase<Arg> = (arg: Arg) => void
+type EventListenerBase<Arg> = (arg: Arg) => void;
 
 export class EventEmitter<Events extends EventObj = EventObj> {
   private listeners: {
-    [K in keyof Events]: EventListenerBase<Events[K]>[]
-  }
+    [K in keyof Events]: EventListenerBase<Events[K]>[];
+  };
 
   constructor() {
-    this.listeners = {} as Record<keyof Events, EventListener[]>
+    this.listeners = { any: [] } as Record<keyof Events, EventListener[]>;
   }
 
   emit<Event extends keyof Events>(name: Event, message: Events[Event]): void {
-    if (!this.listeners[name]) return
+    this.listeners.any.forEach((listener) => {
+      listener(message as any);
+    });
+    if (!this.listeners[name]) return;
+
     this.listeners[name].forEach((listener) => {
-      listener(message)
-    })
+      listener(message);
+    });
   }
 
   on<Event extends keyof Events>(
@@ -23,16 +27,16 @@ export class EventEmitter<Events extends EventObj = EventObj> {
     listener: EventListenerBase<Events[Event]>
   ): () => void {
     if (!this.listeners[name]) {
-      this.listeners[name] = []
+      this.listeners[name] = [];
     }
 
-    this.listeners[name].push(listener)
+    this.listeners[name].push(listener);
 
     return () => {
       this.listeners[name] = this.listeners[name].filter(
         (cb) => cb !== listener
-      )
-    }
+      );
+    };
   }
 
   once<Event extends keyof Events>(
@@ -40,10 +44,10 @@ export class EventEmitter<Events extends EventObj = EventObj> {
     listener: EventListenerBase<Events[Event]>
   ): () => void {
     const unsubscribe = this.on(name, (msg: any) => {
-      unsubscribe()
-      listener(msg)
-    })
+      unsubscribe();
+      listener(msg);
+    });
 
-    return unsubscribe
+    return unsubscribe;
   }
 }

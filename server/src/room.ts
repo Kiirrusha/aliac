@@ -1,6 +1,10 @@
 import Elysia from "elysia";
 import { Room, Team, User } from "../../shared/types";
-import { EventEmitter } from "./EventEmitter";
+import { EventEmitter } from "./utils/EventEmitter";
+import { createError } from "./utils/error";
+import { Response } from "./utils/response";
+import { roomToDTO } from "./utils/roomDTO";
+import { autorun, makeAutoObservable, reaction, runInAction } from "mobx";
 
 export class RoomModel implements Room {
   name: string;
@@ -12,9 +16,11 @@ export class RoomModel implements Room {
   roundTime: number;
   rounds: number | null;
 
-  roomBroadcast = new EventEmitter()
+  roomBroadcast = new EventEmitter();
 
   constructor(admin: User) {
+    makeAutoObservable(this);
+
     this.name = "";
     this.id = crypto.randomUUID();
     this.admin = admin;
@@ -23,6 +29,13 @@ export class RoomModel implements Room {
     this.pointsToWin = null;
     this.roundTime = 0;
     this.rounds = null;
+
+    autorun(() => {
+      this.roomBroadcast.emit(
+        "roomUpdate",
+        new Response("roomUpdate", roomToDTO(this))
+      );
+    });
   }
 
   get participants() {
@@ -30,8 +43,20 @@ export class RoomModel implements Room {
   }
 
   join(user: User) {
+    if (this.participants.some((p) => p.name === user.name)) {
+      throw createError(
+        "user already joined",
+        `Пользователь ${user.name} уже в комнате`
+      );
+    }
     this.spectators.push(user);
+    this.roomBroadcast.emit(
+      "roomUpdate",
+      new Response("roomUpdate", roomToDTO(this))
+    );
   }
 
-  deleteRoom() {}
+  deleteRoom() {
+    this.roomBroadcast.emit("deleteRoom", undefined);
+  }
 }

@@ -54,9 +54,8 @@ class RootStore {
     this.socket.onmessage = (event) => {
       const body = JSON.parse(event.data);
 
-      if (body.eventType === "user_room") {
+      if (body.eventType === "roomUpdate") {
         this.room = body.data;
-        console.log(body);
       }
     };
   };
