@@ -3,7 +3,7 @@ import { Room } from "../../../shared/types";
 import axios from "axios";
 import { UserStore } from "./userStore";
 
-class RootStore {
+export class RootStore {
   userStore: UserStore;
 
   rooms!: Room[];
@@ -14,7 +14,7 @@ class RootStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.userStore = new UserStore();
+    this.userStore = new UserStore(this);
 
     this.getRooms();
   }
