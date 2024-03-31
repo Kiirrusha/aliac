@@ -2,6 +2,7 @@ import cors from "@elysiajs/cors";
 import { Elysia, t } from "elysia";
 import { RoomsModel } from "./rooms";
 import { User } from "../../shared/types";
+import { roomToDTO } from "./utils/roomDTO";
 
 const rooms = new RoomsModel();
 
@@ -11,7 +12,7 @@ app.use(cors());
 app.use(rooms.socket);
 
 app.get("/rooms", () => {
-  return rooms.rooms;
+  return rooms.rooms.map((room) => roomToDTO(room));
 });
 
 app.post(
@@ -22,7 +23,7 @@ app.post(
       name,
     };
     const room = rooms.addRoom(user);
-    return room;
+    return roomToDTO(room);
   },
   {
     query: t.Object({
@@ -31,23 +32,4 @@ app.post(
   }
 );
 
-app.delete(
-  "/rooms/:id",
-  (req) => {
-    const id = req.params.id;
-    const adminName = req.query.user_name;
-
-    const deletedRoom = rooms.removeRoom(id, adminName);
-    return deletedRoom;
-  },
-  {
-    query: t.Object({ user_name: t.String() }),
-    params: t.Object({ id: t.String() }),
-  }
-);
-
 app.listen(3000);
-
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
