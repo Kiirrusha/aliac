@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
 import style from "./Layout.module.scss";
