@@ -51,8 +51,6 @@ export class RoomsModel {
         ws.send(error);
       }
     },
-    
-
   };
 
   constructor() {
@@ -77,6 +75,8 @@ export class RoomsModel {
         try {
           const room = this.findRoomByUserSocket(ws.id);
           room.spectators = room.spectators.filter((s) => s.socketId !== ws.id);
+          room.teams = room.teams.filter((t) => t.players.some((p) => p.socketId === ws.id));
+          room.teams = room.teams.filter((t) => t.leader?.socketId !== ws.id);
         } catch (e) {}
       },
     });
