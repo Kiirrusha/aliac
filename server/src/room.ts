@@ -24,38 +24,7 @@ export class RoomModel implements Room {
     this.name = "";
     this.id = crypto.randomUUID();
     this.admin = admin;
-    this.teams = [
-      {
-        name: "Team 1",
-        players: [
-          {
-            name: "Player 1",
-          },
-          {
-            name: "Player 2",
-          },
-        ],
-        leader: {
-          name: "Leader1",
-        },
-        totalPoints: 0,
-      },
-      {
-        name: "Team 2",
-        players: [
-          {
-            name: "Player 3",
-          },
-          {
-            name: "Player 4",
-          },
-        ],
-        leader: {
-          name: "Leader2",
-        },
-        totalPoints: 0,
-      },
-    ];
+    this.teams = [];
     this.spectators = [];
     this.pointsToWin = null;
     this.roundTime = 0;
@@ -109,6 +78,11 @@ export class RoomModel implements Room {
 
     this.spectators = this.spectators.filter((u) => u.name !== userName);
     if (user === team.leader) team.leader = null;
+    this.teams.forEach((t) => {
+      if (t.players.find((u) => u.name === userName)) {
+        t.players = t.players.filter((u) => u.name !== userName);
+      }
+    });
 
     team.players.push(user);
   }
