@@ -33,7 +33,7 @@ export class RoomModel implements Room {
           },
           {
             name: "Player 2",
-          }
+          },
         ],
         leader: {
           name: "Leader1",
@@ -48,13 +48,13 @@ export class RoomModel implements Room {
           },
           {
             name: "Player 4",
-          }
+          },
         ],
         leader: {
           name: "Leader2",
         },
         totalPoints: 0,
-      }
+      },
     ];
     this.spectators = [];
     this.pointsToWin = null;
@@ -69,8 +69,12 @@ export class RoomModel implements Room {
     });
   }
 
-  get participants() {
-    return [...this.spectators, ...this.teams.map((t) => t.players).flat()];
+  get participants(): User[] {
+    return [
+      ...this.spectators,
+      ...this.teams.map((t) => t.players).flat(),
+      ...this.teams.map((t) => t.leader).filter((u) => !!u),
+    ];
   }
 
   join(user: User) {
@@ -85,6 +89,74 @@ export class RoomModel implements Room {
       "roomUpdate",
       new Response("roomUpdate", roomToDTO(this))
     );
+  }
+
+  moveToPlayers(teamName: string, userName) {
+    const team = this.teams.find((t) => t.name === teamName);
+    if (!team)
+      throw createError("team not found", `Команда ${teamName} не найдена`);
+    const user = this.participants.find((u) => u.name === userName);
+    if (!user)
+      throw createError(
+        "user not found in room",
+        `Пользователь ${userName} не найден в комнате ${this.id}`
+      );
+    if (team.players.find((u) => u.name === userName))
+      throw createError(
+        "user already in team",
+        `Пользователь ${userName} уже в команде ${teamName}`
+      );
+
+    this.spectators = this.spectators.filter((u) => u.name !== userName);
+    if (user === team.leader) team.leader = null;
+
+    team.players.push(user);
+  }
+
+  moveToSpectator(userName: string) {
+    const user = this.participants.find((u) => u.name === userName);
+    if (!user)
+      throw createError(
+        "user not found in room",
+        `Пользователь ${userName} не найден в комнате ${this.id}`
+      );
+
+    if (this.spectators.find((u) => u.name === userName))
+      throw createError(
+        "user already in spectators",
+        `Пользователь ${userName} уже найден в списке наблюдателей`
+      );
+    this.teams.forEach((team) => {
+      if (team.players.find((u) => u.name === userName)) {
+        team.players = team.players.filter((u) => u.name !== userName);
+      }
+      if (team.leader?.name === userName) team.leader = null;
+    });
+
+    this.spectators.push(user);
+  }
+
+  moveToLeader(teamName: string, userName: string) {
+    const team = this.teams.find((t) => t.name === teamName);
+    if (!team)
+      throw createError("team not found", `Команда ${teamName} не найдена`);
+    const user = this.participants.find((u) => u.name === userName);
+    if (!user)
+      throw createError(
+        "user not found in room",
+        `Пользователь ${userName} не найден в комнате ${this.id}`
+      );
+
+    if (team.leader?.name === userName)
+      throw createError(
+        "user already leader",
+        `Пользователь ${userName} уже в лидер ${teamName}`
+      );
+
+    this.spectators = this.spectators.filter((u) => u.name !== userName);
+    team.players = team.players.filter((u) => u.name !== userName);
+
+    team.leader = user;
   }
 
   deleteRoom() {

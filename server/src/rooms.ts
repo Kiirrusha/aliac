@@ -25,6 +25,34 @@ export class RoomsModel {
         ws.send(error);
       }
     },
+    move_to_spectator: (ws, data) => {
+      try {
+        const room = this.findRoomById(data.roomId);
+        room.moveToSpectator(data.user_name);
+      } catch (error) {
+        ws.send(error);
+      }
+    },
+
+    move_to_leader: (ws, data) => {
+      try {
+        const room = this.findRoomById(data.roomId);
+        room.moveToLeader(data.teamName, data.user_name);
+      } catch (error) {
+        ws.send(error);
+      }
+    },
+
+    move_to_player: (ws, data) => {
+      try {
+        const room = this.findRoomById(data.roomId);
+        room.moveToPlayers(data.teamName, data.user_name);
+      } catch (error) {
+        ws.send(error);
+      }
+    },
+    
+
   };
 
   constructor() {

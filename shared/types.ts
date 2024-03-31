@@ -6,7 +6,7 @@ export interface User {
 export interface Team {
   name: string;
   players: User[];
-  leader: User;
+  leader: User | null;
   totalPoints: number;
 }
 
