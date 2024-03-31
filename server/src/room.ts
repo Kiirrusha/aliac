@@ -24,7 +24,20 @@ export class RoomModel implements Room {
     this.name = "";
     this.id = crypto.randomUUID();
     this.admin = admin;
-    this.teams = [];
+    this.teams = [
+      {
+        name: "red",
+        players: [],
+        leader: null,
+        totalPoints: 0,
+      },
+      {
+        name: "blue",
+        players: [],
+        leader: null,
+        totalPoints: 0,
+      },
+    ];
     this.spectators = [];
     this.pointsToWin = null;
     this.roundTime = 0;
