@@ -66,6 +66,19 @@ export class RootStore {
     this.socket = null;
     this.room = null;
   };
+
+  moveToPlayer = (teamName: string) => {
+    if (!this.room) return;
+    const body = {
+      eventType: "move_to_player",
+      data: {
+        roomId: this.room?.id,
+        teamName: teamName,
+        user_name: this.userStore.user.name,
+      },
+    };
+    this.socket?.send(JSON.stringify(body));
+  };
 }
 
 export const rootStore = new RootStore();
