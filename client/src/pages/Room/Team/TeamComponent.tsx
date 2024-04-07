@@ -1,5 +1,4 @@
 import { Team } from "../../../../../shared/types";
-import style from "../Room.module.scss";
 import { rootStore } from "src/stores/RootStore";
 import { observer } from "mobx-react-lite";
 
@@ -10,17 +9,14 @@ interface Props {
 export const TeamComponent = observer(({ team }: Props) => {
   const { players, leader, name } = team;
   return (
-    <div className={style.team}>
+    <div>
       <h3>{name}</h3>
-      <ul key={name} className={style.players}>
+      <ul key={name}>
         {players.map((player) => (
-          <li key={player.name} className={style.player}>
-            {player.name}
-          </li>
+          <li key={player.name}>{player.name}</li>
         ))}
         {players.length < 5 && (
           <button
-            className={style.buttonPlayer}
             onClick={() => {
               rootStore.moveToPlayer(name);
             }}
@@ -31,11 +27,7 @@ export const TeamComponent = observer(({ team }: Props) => {
       </ul>
 
       <hr></hr>
-      {leader ? (
-        <div className={style.captain}>{leader.name}</div>
-      ) : (
-        <button className={style.button}>Слот лидера</button>
-      )}
+      {leader ? <div>{leader.name}</div> : <button>Слот лидера</button>}
     </div>
   );
 });

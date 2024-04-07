@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
-import style from "./Room.module.scss";
 import { TeamComponent } from "./Team/TeamComponent";
 
 export const Room: FC = observer(() => {
@@ -22,20 +21,18 @@ export const Room: FC = observer(() => {
 
   const { teams, spectators } = room;
   return (
-    <div className={style.container}>
-      <h2 className={style.header}>Команды</h2>
-      <div className={style.teams}>
+    <div>
+      <h2>Команды</h2>
+      <div>
         {teams.map((team) => (
           <TeamComponent key={team.name} team={team} />
         ))}
       </div>
-      <div className={style.spectatorsContainer}>
-        <h2 className={style.header}>Наблюдатели</h2>
-        <ul className={style.spectators}>
+      <div>
+        <h2>Наблюдатели</h2>
+        <ul>
           {spectators.map((spectator) => (
-            <li key={spectator.name} className={style.spectator}>
-              {spectator.name}
-            </li>
+            <li key={spectator.name}>{spectator.name}</li>
           ))}
         </ul>
       </div>

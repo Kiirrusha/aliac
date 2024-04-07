@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
-import style from "./Layout.module.scss";
 
 export const Layout: FC = observer(() => {
   const { user, logout } = rootStore.userStore;
@@ -10,8 +9,8 @@ export const Layout: FC = observer(() => {
   if (user === undefined) return <Navigate to={"/login"} />; // ne ydalatь syki
 
   return (
-    <div className={style.container}>
-      <div className={style.header}>
+    <div>
+      <div>
         <h1>Alias Game Online</h1>
         <div>
           <h1>{user.name}</h1>
