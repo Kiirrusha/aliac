@@ -1,5 +1,5 @@
 import Elysia, { t } from "elysia";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { Room, User } from "../../shared/types";
 import { RoomModel } from "./Room";
 import { createError, isError } from "./utils/error";
@@ -51,6 +51,26 @@ export class RoomsModel {
         ws.send(error);
       }
     },
+
+    create_team: (ws, data) => {
+      try {
+        const room = this.findRoomById(data.roomId);
+        room.checkAdmin(data.userName);
+        room.createTeam(data.teamName);
+      } catch (error) {
+        ws.send(error);
+      }
+    },
+
+    delete_team: (ws, data) => {
+      try {
+        const room = this.findRoomById(data.roomId);
+        room.checkAdmin(data.userName);
+        room.deleteTeam(data.teamName);
+      } catch (error) {
+        ws.send(error);
+      }
+    },
   };
 
   constructor() {
@@ -74,9 +94,7 @@ export class RoomsModel {
       close: (ws) => {
         try {
           const room = this.findRoomByUserSocket(ws.id);
-          room.spectators = room.spectators.filter((s) => s.socketId !== ws.id);
-          room.teams = room.teams.filter((t) => t.players.some((p) => p.socketId === ws.id));
-          room.teams = room.teams.filter((t) => t.leader?.socketId !== ws.id);
+          room.removeUserBySocketId(ws.id);
         } catch (e) {}
       },
     });
@@ -98,12 +116,6 @@ export class RoomsModel {
       const error = deletedRoom;
       return error;
     }
-    if (deletedRoom.admin.name !== adminName) {
-      return createError(
-        "not admin",
-        "Вы не являетесь администратором этой комнаты"
-      );
-    }
     deletedRoom.deleteRoom();
     this._rooms = this._rooms.filter((r) => r.id !== id);
   }
@@ -121,7 +133,7 @@ export class RoomsModel {
 
   findRoomByUserSocket(socketId: string) {
     const foundedRoom = this._rooms.find((r) =>
-      r.spectators.some((s) => s.socketId === socketId)
+      r.participants.some((s) => s.socketId === socketId)
     );
     if (!foundedRoom) {
       throw createError(

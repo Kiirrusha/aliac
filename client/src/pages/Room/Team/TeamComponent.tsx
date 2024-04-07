@@ -1,4 +1,3 @@
-import { toJS } from "mobx";
 import { Team } from "../../../../../shared/types";
 import style from "../Room.module.scss";
 import { rootStore } from "src/stores/RootStore";
@@ -10,7 +9,6 @@ interface Props {
 
 export const TeamComponent = observer(({ team }: Props) => {
   const { players, leader, name } = team;
-  console.log(toJS(players.length));
   return (
     <div className={style.team}>
       <h3>{name}</h3>

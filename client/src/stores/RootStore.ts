@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { Room } from "../../../shared/types";
 import axios from "axios";
 import { UserStore } from "./userStore";
+import { toast } from "react-toastify";
 
 export class RootStore {
   userStore: UserStore;
@@ -53,6 +54,12 @@ export class RootStore {
 
     this.socket.onmessage = (event) => {
       const body = JSON.parse(event.data);
+
+      if (body.data.error) {
+        toast.error(body.data.description);
+      }
+
+      console.log(body);
 
       if (body.eventType === "roomUpdate") {
         this.room = body.data;

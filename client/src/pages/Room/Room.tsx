@@ -3,7 +3,6 @@ import { FC, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
 import style from "./Room.module.scss";
-import { toJS } from "mobx";
 import { TeamComponent } from "./Team/TeamComponent";
 
 export const Room: FC = observer(() => {
@@ -22,7 +21,6 @@ export const Room: FC = observer(() => {
   if (!room) return <p>loading...</p>;
 
   const { teams, spectators } = room;
-  console.log(toJS(rootStore.room));
   return (
     <div className={style.container}>
       <h2 className={style.header}>Команды</h2>
