@@ -8,7 +8,9 @@ import { ToastContainer } from "react-toastify";
 import { MantineProvider, createTheme } from "@mantine/core";
 
 const theme = createTheme({
-  /** Put your mantine theme override here */
+  defaultRadius: "lg",
+  fontFamily: "K2D",
+  fontSmoothing: true,
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
