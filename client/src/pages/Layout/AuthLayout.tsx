@@ -1,11 +1,11 @@
 import { AppShell, Container, Group } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Logo } from "src/components/Logo";
-import { RootStore, rootStore } from "src/stores/RootStore";
+import { rootStore } from "src/stores/RootStore";
 
-export const Layout: FC = observer(() => {
+export const AuthLayout: FC = observer(() => {
   const { user, logout } = rootStore.userStore;
 
   return (

@@ -1,27 +1,34 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Login } from "./Login";
+import { Login } from "./Login/Login";
 import { Room } from "./Room/Room";
 import { Home } from "./Home/Home";
 import { ProtectedRoute } from "src/components/ProtectedRoute";
-import { Layout } from "./Layout/Layout";
+import { AuthLayout } from "./Layout/AuthLayout";
+import { WithPaper } from "./Layout/WithPaper";
 
 export const router = createBrowserRouter([
   {
-    element: <Layout />,
+    element: <AuthLayout />,
     children: [
       {
-        element: <ProtectedRoute />,
+        element: <WithPaper />,
         children: [
           {
-            path: "/",
-            element: <Home />,
-          },
-          {
-            path: "room/:roomId",
-            element: <Room />,
+            element: <ProtectedRoute />,
+            children: [
+              {
+                path: "/",
+                element: <Home />,
+              },
+              {
+                path: "room/:roomId",
+                element: <Room />,
+              },
+            ],
           },
         ],
       },
+
       {
         path: "/login",
         element: <Login />,

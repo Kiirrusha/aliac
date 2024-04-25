@@ -1,6 +1,16 @@
-import { Button, Group, Input, Paper, Stack, Text } from "@mantine/core";
+import {
+  Button,
+  Grid,
+  GridCol,
+  Group,
+  Input,
+  Paper,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
+import { COLORS } from "src/const/color";
 import { rootStore } from "src/stores/RootStore";
 
 export const Auth: FC = observer(() => {
@@ -10,22 +20,25 @@ export const Auth: FC = observer(() => {
     if (input.length <= 0) return;
     rootStore.userStore.setUser({ name: input });
   };
-
+  // не убирается margin left у Group
   return (
-    <Paper bg={"red"} w={"fit-content"} p={"sm"}>
-      <Stack gap={"xs"}>
-        <Text>Выберите псевдоним</Text>
-        <Group gap={"xs"}>
+    <Stack gap={"xs"}>
+      <Text>Выберите псевдоним</Text>
+      <Grid gutter={"xs"} w={"100%"}>
+        <GridCol span={8}>
           <Input
             type="text"
             value={input}
+            style={{}}
             onChange={(e) => setInput(e.target.value)}
           />
-          <Button onClick={handleClose} disabled={!input.length}>
+        </GridCol>
+        <GridCol span={4}>
+          <Button onClick={handleClose} disabled={!input.length} fullWidth>
             Выбрать
           </Button>
-        </Group>
-      </Stack>
-    </Paper>
+        </GridCol>
+      </Grid>
+    </Stack>
   );
 });
