@@ -1,9 +1,10 @@
 import { Button, Group, List } from "@mantine/core";
+import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
 
-export const Roomss: FC = () => {
+export const Roomss: FC = observer(() => {
   return (
     <List
       listStyleType="none"
@@ -34,4 +35,4 @@ export const Roomss: FC = () => {
       ))}
     </List>
   );
-};
+});

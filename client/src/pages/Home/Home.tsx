@@ -1,10 +1,10 @@
-import { Button, Group, List, Stack, Title } from "@mantine/core";
+import { Button, Stack, Title } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
-import { Roomss } from "./ui/rooms";
 import { addRoom } from "./lib/addRoom";
+import { Roomss } from "./ui/rooms";
 
 export const Home: FC = observer(() => {
   if (!rootStore.userStore.user?.name) return <Navigate to={`/login`} />;
@@ -16,7 +16,7 @@ export const Home: FC = observer(() => {
       </Title>
       <Roomss />
       <Stack w={"25%"} pb={"32px"}>
-        <Button onClick={addRoom}>Создать комнату</Button>
+        <Button onClick={rootStore.addRoom}>Создать комнату</Button>
       </Stack>
     </Stack>
   );
