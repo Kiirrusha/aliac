@@ -1,0 +1,6 @@
+@alias.Server_HostAddress = http://localhost:3000
+
+GET {{alias.Server_HostAddress}}/home
+Accept: application/json
+
+###
