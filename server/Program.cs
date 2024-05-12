@@ -25,10 +25,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<RoomHub>("/room");
-});
-
+app.MapHub<RoomHub>("/room");
 
 app.Run();
