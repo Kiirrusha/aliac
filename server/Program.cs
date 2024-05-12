@@ -1,3 +1,5 @@
+using alias.Server.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,8 +19,16 @@ app.UseCors(builder => builder
 
 app.UseHttpsRedirection();
 
+app.MapControllers();
+
+app.UseRouting();
+
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<RoomHub>("/room");
+});
+
 
 app.Run();
