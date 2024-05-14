@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
 import { TeamComponent } from "./Team/TeamComponent";
 
@@ -8,13 +8,10 @@ export const Room: FC = observer(() => {
   const room = rootStore.room;
 
   const { roomId } = useParams();
-  useEffect(() => {
-    if (!roomId) return;
-    rootStore.joinRoom(roomId);
 
-    return () => {
-      rootStore.leaveRoom(roomId);
-    };
+  useEffect(() => {
+    if (!rootStore.room && roomId) rootStore.socketStore.joinRoom(roomId!);
+    
   }, []);
 
   if (!room) return <p>loading...</p>;
@@ -36,9 +33,7 @@ export const Room: FC = observer(() => {
           ))}
         </ul>
       </div>
-      <Link to={"/"}>
-        <button>Покинуть комнату</button>
-      </Link>
+        <button onClick={() => rootStore.socketStore.leaveRoom()}>Покинуть комнату</button>
     </div>
   );
 });

@@ -3,8 +3,7 @@ import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Navigate } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
-import { addRoom } from "./lib/addRoom";
-import { Roomss } from "./ui/rooms";
+import { Rooms } from "./ui/rooms";
 
 export const Home: FC = observer(() => {
   if (!rootStore.userStore.user?.name) return <Navigate to={`/login`} />;
@@ -14,7 +13,7 @@ export const Home: FC = observer(() => {
       <Title order={2} ta={"center"} pt={"16px"}>
         Доступные комнаты
       </Title>
-      <Roomss />
+      <Rooms />
       <Stack w={"25%"} pb={"32px"}>
         <Button onClick={rootStore.addRoom}>Создать комнату</Button>
       </Stack>

@@ -1,10 +1,13 @@
 import { Button, Group, List } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { rootStore } from "src/stores/RootStore";
 
-export const Roomss: FC = observer(() => {
+export const Rooms: FC = observer(() => {
+  const { socketStore } = rootStore;
+  const navigate = useNavigate();
+
   return (
     <List
       listStyleType="none"
@@ -28,9 +31,14 @@ export const Roomss: FC = observer(() => {
           }}
         >
           <List listStyleType="none">{room.id}</List>
-          <Link to={`/room/${room.id}`}>
-            <Button>Подключиться</Button>
-          </Link>
+          <Button
+            onClick={async () => {
+              await socketStore.joinRoom(room.id);
+              navigate(`/room/${room.id}`);
+            }}
+          >
+            Подключиться
+          </Button>
         </Group>
       ))}
     </List>
