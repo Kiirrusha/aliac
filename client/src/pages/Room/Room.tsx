@@ -13,7 +13,7 @@ export const Room: FC = observer(() => {
     rootStore.joinRoom(roomId);
 
     return () => {
-      rootStore.leaveRoom();
+      rootStore.leaveRoom(roomId);
     };
   }, []);
 

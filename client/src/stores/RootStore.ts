@@ -3,6 +3,7 @@ import { Room } from "../../../shared/types";
 import axios from "axios";
 import { UserStore } from "./userStore";
 import { toast } from "react-toastify";
+import { connection } from "../App";
 
 export class RootStore {
   userStore: UserStore;
@@ -10,8 +11,6 @@ export class RootStore {
   rooms!: Room[];
 
   room: Room | null = null;
-
-  socket: WebSocket | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -35,56 +34,75 @@ export class RootStore {
   };
 
   joinRoom = async (roomId: string) => {
-    if (this.socket) return;
-    const user_name = localStorage.getItem("user_name");
-    if (!user_name) return;
+    if (!roomId || !localStorage.getItem("user_name")) return;
 
-    this.socket = new WebSocket(`ws://localhost:3000/room`);
-
-    this.socket.onopen = () => {
+    try {
       const body = {
-        eventType: "join",
         data: {
           roomId,
-          user_name,
-        },
+          user_name: localStorage.getItem("user_name"),
+        }
       };
-      this.socket?.send(JSON.stringify(body));
-    };
 
-    this.socket.onmessage = (event) => {
-      const body = JSON.parse(event.data);
+      const result = await connection.invoke("JoinRoom", body);
 
-      if (body.data.error) {
-        toast.error(body.data.description);
+      if (result.value.status === "success"){
+        toast.success("Успешный вход в комнату");
+        this.room = result.value.data;
       }
 
-      console.log(body);
-
-      if (body.eventType === "roomUpdate") {
-        this.room = body.data;
+      if (result.value.status === "error") {
+        toast.error(result.value.error);
+        return;
       }
-    };
+    } catch (error) {
+      console.error("Error joining room:", error);
+    }
   };
 
-  leaveRoom = () => {
-    if (!this.socket) return;
-    this.socket.close();
-    this.socket = null;
-    this.room = null;
-  };
-
-  moveToPlayer = (teamName: string) => {
-    if (!this.room) return;
+  leaveRoom = async (roomId: string) => {
     const body = {
-      eventType: "move_to_player",
+      data: {
+        roomId,
+        user_name: localStorage.getItem("user_name"),
+      }
+    };
+
+    const result = await connection.invoke("LeaveRoom", body);
+
+    if (result.value.status === "success"){
+      toast.success("Вы вышли из комнаты");
+      this.room = null;
+    }
+    
+    if (result.value.status === "error") {
+      toast.error(result.value.error);
+      return;
+    } 
+  };
+
+  moveToPlayer = async (teamName: string) => {
+    if (!this.room) return;
+
+    const body = {
       data: {
         roomId: this.room?.id,
-        teamName: teamName,
+        team_name: teamName,
         user_name: this.userStore.user.name,
+        move_to: "team" // team/spectator
       },
     };
-    this.socket?.send(JSON.stringify(body));
+
+    const result = await connection.invoke("MovePlayer", body);
+
+    if (result.value.status === "success"){
+      this.room = result.value.data;
+    }
+    
+    if (result.value.status === "error") {
+      toast.error(result.value.error);
+      return;
+    } 
   };
 }
 

@@ -11,15 +11,11 @@ const connection = new SignalR.HubConnectionBuilder()
 
 connection.start()
   .then(() => console.log('Connected to SignalR hub'))
-  .then(() => connection.invoke("JoinRoom"))
   .catch(err => console.error('Error connecting to hub:', err));
-
-connection.on('UpdateRoom', function() {
-  console.log('123');
-});
 
 const App = () => {
   return <RouterProvider router={router} />;
 };
 
 export default App;
+export { connection }
