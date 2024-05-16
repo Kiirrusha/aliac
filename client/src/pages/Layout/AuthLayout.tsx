@@ -1,8 +1,9 @@
-import { AppShell, Container, Group } from "@mantine/core";
+import { AppShell, Container, Group, Text } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
 import { Logo } from "src/components/Logo";
+import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 
 export const AuthLayout: FC = observer(() => {
@@ -16,8 +17,12 @@ export const AuthLayout: FC = observer(() => {
             <Logo size={"small"} />
             <Group>
               {user && <p>{user.name}</p>}
-              <button onClick={logout}>logout</button>
-              <p>Правила</p>
+              <CustomButton variant="main" px={48} onClick={logout}>
+                logout
+              </CustomButton>
+              <CustomButton variant="transparent" c={"black"} p={0}>
+                Правила
+              </CustomButton>
             </Group>
           </Group>
         </Container>

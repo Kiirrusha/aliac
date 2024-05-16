@@ -2,6 +2,7 @@ import { Button, Group, List } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 
 export const Rooms: FC = observer(() => {
@@ -30,15 +31,18 @@ export const Rooms: FC = observer(() => {
             borderRadius: "28px",
           }}
         >
-          <List listStyleType="none">{room.id}</List>
-          <Button
+          <List c={"white"} listStyleType="none">
+            {room.id}
+          </List>
+          <CustomButton
             onClick={async () => {
               await socketStore.joinRoom(room.id);
               navigate(`/room/${room.id}`);
             }}
+            variant="transparent"
           >
             Подключиться
-          </Button>
+          </CustomButton>
         </Group>
       ))}
     </List>

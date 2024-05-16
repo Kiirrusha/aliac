@@ -1,7 +1,8 @@
-import { Button, Stack, Title } from "@mantine/core";
+import { Stack, Title } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Navigate } from "react-router-dom";
+import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 import { Rooms } from "./ui/rooms";
 
@@ -15,7 +16,9 @@ export const Home: FC = observer(() => {
       </Title>
       <Rooms />
       <Stack w={"25%"} pb={"32px"}>
-        <Button onClick={rootStore.addRoom}>Создать комнату</Button>
+        <CustomButton variant="main" onClick={rootStore.addRoom}>
+          Создать комнату
+        </CustomButton>
       </Stack>
     </Stack>
   );

@@ -1,4 +1,4 @@
-import { Button, Modal, Stack } from "@mantine/core";
+import { Modal, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
@@ -8,6 +8,7 @@ import { Logo } from "src/components/Logo";
 import { PeoplesImg } from "src/components/PeoplesImg";
 import { rootStore } from "src/stores/RootStore";
 import s from "./Login.module.scss";
+import { CustomButton } from "src/shared/ui/CustomButton";
 export const Login: FC = observer(() => {
   const user_name = rootStore.userStore.user?.name;
   const [opened, { open, close }] = useDisclosure(false);
@@ -20,9 +21,9 @@ export const Login: FC = observer(() => {
         <Stack align="center">
           <Logo size={"large"} />
           <PeoplesImg />
-          <Button color="red" onClick={open}>
+          <CustomButton variant="main" px={40} onClick={open}>
             Играть
-          </Button>
+          </CustomButton>
         </Stack>
       </Stack>
 

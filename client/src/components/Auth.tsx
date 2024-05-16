@@ -11,6 +11,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
 import { COLORS } from "src/const/color";
+import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 
 export const Auth: FC = observer(() => {
@@ -23,7 +24,9 @@ export const Auth: FC = observer(() => {
   // не убирается margin left у Group
   return (
     <Stack gap={"xs"}>
-      <Text>Выберите псевдоним</Text>
+      <Text fw={600} c={"white"} size="lg">
+        Выберите псевдоним
+      </Text>
       <Grid gutter={"xs"} w={"100%"}>
         <GridCol span={8}>
           <Input
@@ -34,9 +37,14 @@ export const Auth: FC = observer(() => {
           />
         </GridCol>
         <GridCol span={4}>
-          <Button onClick={handleClose} disabled={!input.length} fullWidth>
+          <CustomButton
+            variant="main"
+            onClick={handleClose}
+            disabled={!input.length}
+            fullWidth
+          >
             Выбрать
-          </Button>
+          </CustomButton>
         </GridCol>
       </Grid>
     </Stack>
