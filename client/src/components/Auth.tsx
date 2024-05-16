@@ -1,16 +1,6 @@
-import {
-  Button,
-  Grid,
-  GridCol,
-  Group,
-  Input,
-  Paper,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Grid, GridCol, Input, Stack, Text } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
-import { COLORS } from "src/const/color";
 import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 

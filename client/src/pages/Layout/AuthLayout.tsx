@@ -1,4 +1,4 @@
-import { AppShell, Container, Group, Text } from "@mantine/core";
+import { AppShell, Container, Group } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { Outlet } from "react-router-dom";

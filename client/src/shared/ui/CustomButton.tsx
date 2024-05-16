@@ -26,8 +26,6 @@ export const CustomButton: FC<MainButtonProps> = ({ ...props }) => {
   const styles = buttonStyles[variant];
   const buttonVariants = buttonVariant[variant];
 
-  // убрать лишние варианты, в тексте в теме через компонент прописать белый цвет и в тайтле, разобраться с хедером почему двигается
-
   return (
     <Button style={styles} variant={buttonVariants} color="#EC6D75" {...rest}>
       {children}

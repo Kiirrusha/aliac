@@ -1,4 +1,4 @@
-import { Button, Group, List } from "@mantine/core";
+import { Group, List } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
