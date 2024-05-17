@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const TeamComponent = observer(({ team }: Props) => {
-  const { players, leader, name } = team;
+  const { players,  name } = team;
   return (
     <div>
       <h3>{name}</h3>
@@ -18,7 +18,7 @@ export const TeamComponent = observer(({ team }: Props) => {
         {players.length < 5 && (
           <button
             onClick={() => {
-              rootStore.moveToPlayer(name);
+              rootStore.socketStore.moveTo("team", name);
             }}
           >
             Занять слот
@@ -27,7 +27,6 @@ export const TeamComponent = observer(({ team }: Props) => {
       </ul>
 
       <hr></hr>
-      {leader ? <div>{leader.name}</div> : <button>Слот лидера</button>}
     </div>
   );
 });

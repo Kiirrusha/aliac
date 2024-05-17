@@ -31,6 +31,7 @@ export const Room: FC = observer(() => {
           {spectators.map((spectator) => (
             <li key={spectator.name}>{spectator.name}</li>
           ))}
+          <button onClick={() => rootStore.socketStore.moveTo("spectator")}>Переместиться в наблюдатели</button>
         </ul>
       </div>
         <button onClick={() => rootStore.socketStore.leaveRoom()}>Покинуть комнату</button>
