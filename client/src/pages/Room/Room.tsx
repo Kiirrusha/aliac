@@ -5,10 +5,8 @@ import { rootStore } from "src/stores/RootStore";
 import { TeamComponent } from "./Team/TeamComponent";
 import {
   Box,
-  Button,
   Center,
   Group,
-  Paper,
   SimpleGrid,
   Stack,
   Text,
