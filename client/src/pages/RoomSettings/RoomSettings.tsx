@@ -22,7 +22,7 @@ export const RoomSettings: FC = observer(() => {
         <Avatar size={130} c={"white"} style={{ backgroundColor: "violet" }}>
           2
         </Avatar>
-        <CircleWithNumber number={"1"} backgroundColor={"green"} />
+        <CircleWithNumber number={1} backgroundColor={"green"} />
       </Group>
       <Stack w={"25%"} pb={"32px"}>
         <CustomButton variant="main">Продолжить</CustomButton>

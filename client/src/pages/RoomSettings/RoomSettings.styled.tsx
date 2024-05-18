@@ -6,14 +6,15 @@ const Circle = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-content: center;
 `;
 
 const Numbers = styled.span`
   font-size: 100px;
-  color: white;
+  color: black;
+  opacity: 0.75;
+  line-height: 0;
 `;
 
 const CloseButton = styled.button`
@@ -35,8 +36,9 @@ const CloseButton = styled.button`
 `;
 
 type Props = {
-  number: string;
+  number: number;
   backgroundColor: string;
+  hasCloseButton?: boolean;
 };
 
 export const CircleWithNumber: FC<Props> = (props) => {
@@ -44,7 +46,11 @@ export const CircleWithNumber: FC<Props> = (props) => {
   return (
     <Circle style={{ backgroundColor }}>
       <Numbers>{number}</Numbers>
-      <CloseButton>&#10006;</CloseButton>
+      {props.hasCloseButton &&<CloseButton>&#10006;</CloseButton>}
     </Circle>
   );
 };
+
+CircleWithNumber.defaultProps = {
+  hasCloseButton: true,
+}

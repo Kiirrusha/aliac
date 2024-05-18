@@ -5,10 +5,10 @@ import {
   Paper,
   SimpleGrid,
   Stack,
-  Title
+  Title,
 } from "@mantine/core";
 import { FC, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { WordKits } from "src/shared/types/general";
 import { rootStore } from "src/stores/RootStore";
 
@@ -43,8 +43,7 @@ const mockWordKits: WordKits = [
 export const WordKit: FC = () => {
   const [wordKit, setWordKit] = useState<WordKits>(mockWordKits);
   const navigate = useNavigate();
-  const location = useLocation();
-
+  const params = useParams();
 
   const onWordKitClick = (name: string) => {
     setWordKit(
@@ -60,7 +59,7 @@ export const WordKit: FC = () => {
 
   const onSaveClick = async () => {
     await rootStore.socketStore.saveWordKit(wordKit);
-    navigate(location.pathname.split("/").slice(0, 3).join('/'));
+    navigate(`/room/${params.roomId}`);
   };
 
   const kits = wordKit.map((wordKit) => (
@@ -85,7 +84,7 @@ export const WordKit: FC = () => {
       >
         <Center h={"100%"}>
           <Paper px={"sm"} py={3}>
-            <Title c={"black"} order={3} style={{userSelect: "none"}}>
+            <Title c={"black"} order={3} style={{ userSelect: "none" }}>
               {wordKit.name.toLocaleUpperCase()}
             </Title>
           </Paper>
@@ -99,7 +98,9 @@ export const WordKit: FC = () => {
       <Center pt={"sm"}>
         <SimpleGrid cols={4}>{kits}</SimpleGrid>
       </Center>
-      <Button mt={"auto"} mb={"xs"} px={"xl"} bg={"red"} onClick={onSaveClick}>Сохранить</Button>
+      <Button mt={"auto"} mb={"xs"} px={"xl"} bg={"red"} onClick={onSaveClick}>
+        Сохранить и выйти
+      </Button>
     </Stack>
   );
 };

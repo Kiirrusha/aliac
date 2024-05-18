@@ -4,7 +4,7 @@ import { COLORS } from "src/const/color";
 
 export const WithPaper = () => {
   return (
-    <Paper bg={COLORS.bg} h={"85vh"}>
+    <Paper bg={COLORS.bg} h={"85vh"} p={"md"}>
       <Outlet />
     </Paper>
   );
