@@ -3,6 +3,7 @@ import { RootStore } from "./RootStore";
 
 import * as SignalR from "@microsoft/signalr";
 import { toast } from "react-toastify";
+import { WordKits } from "src/shared/types/general";
 
 export class SocketStore {
   connection;
@@ -22,7 +23,6 @@ export class SocketStore {
 
   joinRoom = async (roomId: string) => {
     const user_name = this.rootStore.userStore.user.name;
-
 
     try {
       const body = {
@@ -52,7 +52,7 @@ export class SocketStore {
     const user_name = this.rootStore.userStore.user.name;
     const roomId = this.rootStore.room?.id;
     if (!roomId || !user_name) return;
-    
+
     const body = {
       data: {
         roomId,
@@ -73,27 +73,49 @@ export class SocketStore {
     }
   };
 
-  // moveToPlayer = async (teamName: string) => {
-  //   if (!this.rootStore.room) return;
+  moveTo = async (to: "team" | "spectator", teamName?: string) => {
+    if (!this.rootStore.room) return;
 
-  //   const body = {
-  //     data: {
-  //       roomId: this.rootStore.room?.id,
-  //       team_name: teamName,
-  //       user_name: this.rootStore.userStore.user.name,
-  //       move_to: "team",
-  //     },
-  //   };
+    const body = {
+      data: {
+        roomId: this.rootStore.room?.id,
+        team_name: teamName,
+        user_name: this.rootStore.userStore.user.name,
+        move_to: to,
+      },
+    };
 
-  //   const result = await this.connection.invoke("MovePlayer", body);
+    const result = await this.connection.invoke("MovePlayer", body);
 
-  //   if (result.value.status === "success") {
-  //     this.rootStore.room = result.value.data;
-  //   }
+    if (result.value.status === "success") {
+      this.rootStore.room = result.value.data;
+    }
 
-  //   if (result.value.status === "error") {
-  //     toast.error(result.value.error);
-  //     return;
-  //   }
-  // };
+    if (result.value.status === "error") {
+      toast.error(result.value.error);
+      return;
+    }
+  };
+
+  saveWordKit = async (wordKits: WordKits) => {
+    if (!this.rootStore.room) return;
+    const body = {
+      data: {
+        roomId: this.rootStore.room?.id,
+        user_name: this.rootStore.userStore.user.name,
+        word_kits: wordKits,
+      },
+    };
+    
+    const result = await this.connection.invoke("SaveWordKit", body);
+
+    if (result.value.status === "success") {
+      toast.success("Сохранено");
+    }
+    
+    if (result.value.status === "error") {
+      toast.error(result.value.error);
+      return;
+    }
+  };
 }

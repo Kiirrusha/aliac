@@ -19,6 +19,11 @@ export class RootStore {
     this.socketStore = new SocketStore(this);
 
     this.getRooms();
+
+
+    this.socketStore.connection.on("UpdateRoom", (room) => {
+      this.room = room;
+    })
   }
 
   getRooms = async () => {

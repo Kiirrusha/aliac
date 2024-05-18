@@ -6,6 +6,7 @@ import { ProtectedRoute } from "src/components/ProtectedRoute";
 import { AuthLayout } from "./Layout/AuthLayout";
 import { WithPaper } from "./Layout/WithPaper";
 import { RoomSettings } from "./RoomSettings/RoomSettings";
+import { WordKit } from "./WordKit/WordKit";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
               {
                 path: "RoomSettings",
                 element: <RoomSettings />,
+              },
+              {
+                path: "room/:roomId/word-kit",
+                element: <WordKit />,
               },
             ],
           },
