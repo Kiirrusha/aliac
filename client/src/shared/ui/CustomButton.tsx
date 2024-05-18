@@ -1,9 +1,9 @@
 import { Button, ButtonProps } from "@mantine/core";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 type MainButtonProps = ButtonProps & {
   variant: "main" | "transparent";
-  children: string;
+  children: ReactNode;
   onClick?: () => void;
 };
 

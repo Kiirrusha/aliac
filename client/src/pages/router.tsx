@@ -5,6 +5,7 @@ import { Home } from "./Home/Home";
 import { ProtectedRoute } from "src/components/ProtectedRoute";
 import { AuthLayout } from "./Layout/AuthLayout";
 import { WithPaper } from "./Layout/WithPaper";
+import { RoomSettings } from "./RoomSettings/RoomSettings";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
               {
                 path: "room/:roomId",
                 element: <Room />,
+              },
+              {
+                path: "RoomSettings",
+                element: <RoomSettings />,
               },
             ],
           },
