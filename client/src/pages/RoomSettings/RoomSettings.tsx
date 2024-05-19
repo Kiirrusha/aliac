@@ -1,32 +1,135 @@
-import { Avatar, Badge, Group, Stack, Title } from "@mantine/core";
-import { observer } from "mobx-react-lite";
-import { FC } from "react";
+import {
+  Group,
+  Input,
+  SegmentedControl,
+  Stack,
+  Switch,
+  Title,
+} from "@mantine/core";
+import { observer, useLocalObservable } from "mobx-react-lite";
+import { FC, useMemo } from "react";
+import { teamsColors } from "src/shared/constants/general";
 import { CustomButton } from "src/shared/ui/CustomButton";
-import { CircleWithNumber } from "./RoomSettings.styled";
+import { rootStore } from "src/stores/RootStore";
+import { CircleAddTeam, CircleWithNumber } from "./RoomSettings.styled";
+import { Link, useParams } from "react-router-dom";
 
 export const RoomSettings: FC = observer(() => {
-  return (
-    <Stack justify="space-between" align="center" w={"100%"} h={"100%"}>
-      <Title order={2} ta={"center"} pt={"16px"}>
-        Выбор команд
-      </Title>
-      <Group>
-        <Badge
-          style={{ fontSize: "%", fontWeight: "bold" }}
+  const room = rootStore.room;
+  if (!room) throw new Error("не найдена комната");
+  const params = useParams();
+  const controller = useLocalObservable(() => ({
+    roundTimeCollection: ["30", "60", "90"],
+    pointsToWinCollection: ["10", "25", "50", "75", "100"],
+    reducePoints: true,
+    currentRoundTime: "60",
+    currentPointsToWin: "50",
+    teamNames: room?.teams.map((team) => {
+      return team.name;
+    }),
+    deleteTeam() {
+      this.teamNames.pop();
+    },
+    addTeam() {
+      this.teamNames = [...this.teamNames, `Team ${this.teamNames.length + 1}`];
+    },
+    changeTeamName(index: number, newName: string) {
+      this.teamNames = this.teamNames.map((name, i) => {
+        if (i === index) return newName;
+        return name;
+      });
+    },
+  }));
+
+  const onSaveRoomSettingsClick = () => {
+    rootStore.socketStore.saveRoomSettings({
+      pointsToWin: controller.currentPointsToWin,
+      roundTime: controller.currentRoundTime,
+      reducePoints: controller.reducePoints,
+      teamNames: controller.teamNames,
+    });
+  };
+
+  const teamsComponents = useMemo(() => {
+    return controller.teamNames.map((teamName, i) => (
+      <Stack align="center" gap={"xs"} key={teamName}>
+        <CircleWithNumber
+          number={i + 1}
+          backgroundColor={teamsColors[i]}
+          hasCloseButton={
+            controller.teamNames.length >= 3 &&
+            i === controller.teamNames.length - 1
+          }
+          onClick={controller.deleteTeam}
+        />
+        {/* <Text c={"white"}>{teamName}</Text> */}
+        <Input
           w={"120px"}
-          h={"120px"}
-          circle
-        >
-          1
-        </Badge>
-        <Avatar size={130} c={"white"} style={{ backgroundColor: "violet" }}>
-          2
-        </Avatar>
-        <CircleWithNumber number={1} backgroundColor={"green"} />
-      </Group>
-      <Stack w={"25%"} pb={"32px"}>
-        <CustomButton variant="main">Продолжить</CustomButton>
+          value={teamName}
+          onChange={(event) => {
+            controller.changeTeamName(i, event.target.value);
+          }}
+        />
       </Stack>
-    </Stack>
+    ));
+  }, [controller.teamNames]);
+
+  return (
+    <>
+      <Stack justify="space-between" w={"100%"} h={"100%"}>
+        <Title order={2} ta={"center"} pt={"16px"}>
+          Выбор команд
+        </Title>
+        <Group align="start">
+          {teamsComponents}
+          {controller.teamNames.length < 4 && (
+            <Stack align="center" gap={0}>
+              <CircleAddTeam onClick={controller.addTeam} />
+            </Stack>
+          )}
+        </Group>
+        <Stack w={"100%"}>
+          <Title order={3}>Длительность раунда (c)</Title>
+          <SegmentedControl
+            data={controller.roundTimeCollection}
+            value={controller.currentRoundTime}
+            onChange={(value) => {
+              controller.currentRoundTime = value;
+            }}
+          />
+        </Stack>
+        <Stack w={"100%"}>
+          <Title order={3}>Очки для победы</Title>
+          <SegmentedControl
+            data={controller.pointsToWinCollection}
+            value={controller.currentPointsToWin}
+            onChange={(value) => {
+              controller.currentPointsToWin = value;
+            }}
+          />
+        </Stack>
+        <Switch
+          labelPosition="left"
+          label={<Title order={3}>Отнимать очки за пропуск</Title>}
+          size="xl"
+          w={"fit-content"}
+          styles={{ track: { cursor: "pointer" } }}
+          checked={controller.reducePoints}
+          onChange={(event) => {
+            controller.reducePoints = event.target.checked;
+          }}
+        />
+        <Stack align="start">
+          <Link to={`/room/${params.roomId}/word-kit`}>
+            <CustomButton variant="main">Выбрать набор слов</CustomButton>
+          </Link>
+        </Stack>
+        <Stack pb={"32px"} align="center">
+          <CustomButton variant="main" onClick={onSaveRoomSettingsClick}>
+            Сохранить
+          </CustomButton>
+        </Stack>
+      </Stack>
+    </>
   );
 });

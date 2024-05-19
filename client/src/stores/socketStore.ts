@@ -3,7 +3,7 @@ import { RootStore } from "./RootStore";
 
 import * as SignalR from "@microsoft/signalr";
 import { toast } from "react-toastify";
-import { WordKits } from "src/shared/types/general";
+import { RoomSettings, WordKits } from "src/shared/types/general";
 
 export class SocketStore {
   connection;
@@ -106,13 +106,35 @@ export class SocketStore {
         word_kits: wordKits,
       },
     };
-    
+
     const result = await this.connection.invoke("SaveWordKit", body);
 
     if (result.value.status === "success") {
       toast.success("Сохранено");
     }
-    
+
+    if (result.value.status === "error") {
+      toast.error(result.value.error);
+      return;
+    }
+  };
+
+  saveRoomSettings = async (roomSettings: RoomSettings) => {
+    if (!this.rootStore.room) return;
+    const body = {
+      data: {
+        roomId: this.rootStore.room?.id,
+        user_name: this.rootStore.userStore.user.name,
+        room_settings: roomSettings,
+      },
+    };
+
+    const result = await this.connection.invoke("SaveRoomSettings", body);
+
+    if (result.value.status === "success") {
+      toast.success("Сохранено");
+    }
+
     if (result.value.status === "error") {
       toast.error(result.value.error);
       return;

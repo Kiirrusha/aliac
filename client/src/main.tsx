@@ -5,7 +5,13 @@ import "./index.css";
 import "@mantine/core/styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { MantineProvider, Title, createTheme } from "@mantine/core";
+import {
+  MantineProvider,
+  SegmentedControl,
+  Switch,
+  Title,
+  createTheme,
+} from "@mantine/core";
 
 const theme = createTheme({
   defaultRadius: "lg",
@@ -20,6 +26,20 @@ const theme = createTheme({
     Title: Title.extend({
       defaultProps: {
         c: "white",
+      },
+    }),
+    SegmentedControl: SegmentedControl.extend({
+      defaultProps: {
+        bg: "#EC6D75",
+        fullWidth: true,
+        withItemsBorders: false,
+        color: "#C65A61",
+        styles: { label: { color: "white" } },
+      },
+    }),
+    Switch: Switch.extend({
+      defaultProps: {
+        color: "#C65A61",
       },
     }),
   },

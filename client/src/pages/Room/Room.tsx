@@ -7,14 +7,15 @@ import {
   Box,
   Center,
   Group,
+  SegmentedControl,
   SimpleGrid,
   Stack,
+  Switch,
   Text,
   Title,
 } from "@mantine/core";
 import { CustomButton } from "src/shared/ui/CustomButton";
-
-const teamsColors = ["green", "violet", "orange", "blue"];
+import { teamsColors } from "src/shared/constants/general";
 
 export const Room: FC = observer(() => {
   const room = rootStore.room;

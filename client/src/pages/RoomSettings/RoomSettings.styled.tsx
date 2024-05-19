@@ -1,56 +1,39 @@
 import { FC } from "react";
-import styled from "styled-components";
+import s from "./RoomSettings.module.scss";
 
-const Circle = styled.div`
-  position: relative;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  display: grid;
-  place-content: center;
-`;
-
-const Numbers = styled.span`
-  font-size: 100px;
-  color: black;
-  opacity: 0.75;
-  line-height: 0;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 20px;
-  height: 20px;
-  background-color: white;
-  color: red;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-`;
-
-type Props = {
+type CircleWithNumberProps = {
   number: number;
   backgroundColor: string;
   hasCloseButton?: boolean;
+  onClick?: () => void;
 };
 
-export const CircleWithNumber: FC<Props> = (props) => {
-  const { backgroundColor, number } = props;
+type CircleAddTeamProps = {
+  onClick?: () => void;
+};
+
+export const CircleWithNumber: FC<CircleWithNumberProps> = (props) => {
+  const { backgroundColor, number, onClick } = props;
   return (
-    <Circle style={{ backgroundColor }}>
-      <Numbers>{number}</Numbers>
-      {props.hasCloseButton &&<CloseButton>&#10006;</CloseButton>}
-    </Circle>
+    <div className={s.Circle} style={{ backgroundColor }}>
+      <span className={s.Numbers}>{number}</span>
+      {props.hasCloseButton && (
+        <button className={s.CloseButton} onClick={onClick}>
+          &#10006;
+        </button>
+      )}
+    </div>
+  );
+};
+
+export const CircleAddTeam: FC<CircleAddTeamProps> = ({ onClick }) => {
+  return (
+    <div className={s.CircleAdd} onClick={onClick}>
+      <button className={s.close}></button>
+    </div>
   );
 };
 
 CircleWithNumber.defaultProps = {
   hasCloseButton: true,
-}
+};
