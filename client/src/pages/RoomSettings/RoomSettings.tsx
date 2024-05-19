@@ -29,6 +29,7 @@ export const RoomSettings: FC = observer(() => {
     }),
     deleteTeam() {
       this.teamNames.pop();
+      console.log(this.teamNames);
     },
     addTeam() {
       this.teamNames = [...this.teamNames, `Team ${this.teamNames.length + 1}`];
@@ -50,29 +51,8 @@ export const RoomSettings: FC = observer(() => {
     });
   };
 
-  const teamsComponents = useMemo(() => {
-    return controller.teamNames.map((teamName, i) => (
-      <Stack align="center" gap={"xs"} key={teamName}>
-        <CircleWithNumber
-          number={i + 1}
-          backgroundColor={teamsColors[i]}
-          hasCloseButton={
-            controller.teamNames.length >= 3 &&
-            i === controller.teamNames.length - 1
-          }
-          onClick={controller.deleteTeam}
-        />
-        {/* <Text c={"white"}>{teamName}</Text> */}
-        <Input
-          w={"120px"}
-          value={teamName}
-          onChange={(event) => {
-            controller.changeTeamName(i, event.target.value);
-          }}
-        />
-      </Stack>
-    ));
-  }, [controller.teamNames]);
+  // const teamsComponents = useMemo(() => {
+  //   return , [controller.teamNames]);
 
   return (
     <>
@@ -81,7 +61,26 @@ export const RoomSettings: FC = observer(() => {
           Выбор команд
         </Title>
         <Group align="start">
-          {teamsComponents}
+          {controller.teamNames.map((teamName, i) => (
+            <Stack align="center" gap={"xs"} key={teamName}>
+              <CircleWithNumber
+                number={i + 1}
+                backgroundColor={teamsColors[i]}
+                hasCloseButton={
+                  controller.teamNames.length >= 3 &&
+                  i === controller.teamNames.length - 1
+                }
+                onClick={controller.deleteTeam}
+              />
+              <Input
+                w={"120px"}
+                value={teamName}
+                onChange={(event) => {
+                  controller.changeTeamName(i, event.target.value);
+                }}
+              />
+            </Stack>
+          ))}
           {controller.teamNames.length < 4 && (
             <Stack align="center" gap={0}>
               <CircleAddTeam onClick={controller.addTeam} />
