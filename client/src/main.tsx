@@ -9,7 +9,7 @@ import { MantineProvider, Title, createTheme } from "@mantine/core";
 
 const theme = createTheme({
   defaultRadius: "lg",
-  fontFamily: "K2D",
+  fontFamily: "K2D, Montserrat",
   fontSmoothing: true,
   headings: {
     sizes: {
