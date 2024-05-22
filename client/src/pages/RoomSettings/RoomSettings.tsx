@@ -1,4 +1,5 @@
 import {
+  Box,
   Group,
   Input,
   SegmentedControl,
@@ -7,12 +8,13 @@ import {
   Title,
 } from "@mantine/core";
 import { observer, useLocalObservable } from "mobx-react-lite";
-import { FC, useMemo } from "react";
+import { FC } from "react";
+import { Link, useParams } from "react-router-dom";
 import { teamsColors } from "src/shared/constants/general";
 import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
+import exit from "./../../assets/svg/exit.svg";
 import { CircleAddTeam, CircleWithNumber } from "./RoomSettings.styled";
-import { Link, useParams } from "react-router-dom";
 
 export const RoomSettings: FC = observer(() => {
   const room = rootStore.room;
@@ -57,9 +59,21 @@ export const RoomSettings: FC = observer(() => {
   return (
     <>
       <Stack justify="space-between" w={"100%"} h={"100%"}>
-        <Title order={2} ta={"center"} pt={"16px"}>
-          Выбор команд
-        </Title>
+        <Group>
+          <Box flex={1} />
+          <Box flex={2} style={{ display: "flex", justifyContent: "center" }}>
+            <Title order={2} ta={"center"}>
+              Выбор команд
+            </Title>
+          </Box>
+          <Box flex={1} style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Link to={`/room/${params.roomId}`}>
+              <CustomButton variant="transparent" p={0}>
+                <img key="icon" width={36} height={36} src={exit} alt="Icon" />
+              </CustomButton>
+            </Link>
+          </Box>
+        </Group>
         <Group align="start">
           {controller.teamNames.map((teamName, i) => (
             <Stack align="center" gap={"xs"} key={teamName}>

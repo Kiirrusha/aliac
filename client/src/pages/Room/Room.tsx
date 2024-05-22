@@ -1,24 +1,24 @@
-import { observer } from "mobx-react-lite";
-import { FC, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { rootStore } from "src/stores/RootStore";
-import { TeamComponent } from "./Team/TeamComponent";
 import {
   Box,
   Center,
   Group,
-  SegmentedControl,
   SimpleGrid,
   Stack,
-  Switch,
   Text,
   Title,
 } from "@mantine/core";
-import { CustomButton } from "src/shared/ui/CustomButton";
+import { observer } from "mobx-react-lite";
+import { FC, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { teamsColors } from "src/shared/constants/general";
+import { CustomButton } from "src/shared/ui/CustomButton";
+import { rootStore } from "src/stores/RootStore";
+import icon from "../../assets/svg/Icon.svg";
+import { TeamComponent } from "./Team/TeamComponent";
 
 export const Room: FC = observer(() => {
   const room = rootStore.room;
+  const params = useParams();
 
   const { roomId } = useParams();
 
@@ -37,9 +37,21 @@ export const Room: FC = observer(() => {
   ));
   return (
     <Stack h={"100%"}>
-      <Title order={2} ta={"center"}>
-        Команды
-      </Title>
+      <Group align="center" w="100%">
+        <Box flex={1} />
+        <Box flex={2} style={{ display: "flex", justifyContent: "center" }}>
+          <Title order={2} ta="center">
+            Команды
+          </Title>
+        </Box>
+        <Box flex={1} style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Link to={`/room/${params.roomId}/settings`}>
+            <CustomButton variant="transparent" p={0}>
+              <img key="icon" src={icon} alt="Icon" />
+            </CustomButton>
+          </Link>
+        </Box>
+      </Group>
       <SimpleGrid cols={4}>
         {teams.map((team, i) => (
           <TeamComponent

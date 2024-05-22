@@ -1,6 +1,8 @@
 import {
+  Box,
   Button,
   Center,
+  Group,
   Indicator,
   Paper,
   SimpleGrid,
@@ -8,9 +10,11 @@ import {
   Title,
 } from "@mantine/core";
 import { FC, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { WordKits } from "src/shared/types/general";
+import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
+import exit from "../../assets/svg/exit.svg";
 
 const mockWordKits: WordKits = [
   {
@@ -95,6 +99,21 @@ export const WordKit: FC = () => {
 
   return (
     <Stack h={"100%"} align="center">
+      <Group w={"100%"}>
+        <Box flex={1} />
+        <Box flex={2} style={{ display: "flex", justifyContent: "center" }}>
+          <Title order={2} ta={"center"}>
+            Выбор набора
+          </Title>
+        </Box>
+        <Box flex={1} style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Link to={`/room/${params.roomId}/settings`}>
+            <CustomButton variant="transparent" p={0}>
+              <img key="icon" width={36} height={36} src={exit} alt="Icon" />
+            </CustomButton>
+          </Link>
+        </Box>
+      </Group>
       <Center pt={"sm"}>
         <SimpleGrid cols={4}>{kits}</SimpleGrid>
       </Center>
