@@ -1,4 +1,6 @@
-﻿namespace alias.Server.Models
+﻿using alias.Server.Hubs;
+
+namespace alias.Server.Models
 {
     public class Room
     {
@@ -10,6 +12,7 @@
         public int? PointsToWin { get; set; }
         public int RoundTime { get; set; }
         public int? Rounds { get; set; }
+        public bool ReducePoints { get; set; }
 
         public Room()
         {
@@ -37,8 +40,8 @@
 
         public void RemoveUser(User user)
         {
-            var teams = Teams.Where(x => x.Players.Any(y => y.Equals(user)));
-            var spectators = Spectators.Where(x => x.Equals(user));
+            var teams = Teams.Where(x => x.Players.Any(y => y.Equals(user))).ToList();
+            var spectators = Spectators.Where(x => x.Equals(user)).ToList();
 
             if (teams.Any())
                 foreach (var team in teams)
@@ -47,6 +50,58 @@
             if (spectators.Any())
                 foreach (var spectator in spectators)
                     Spectators.Remove(spectator);
+        }
+
+        public void UpdateTeams(List<TeamSettings> teams)
+        {
+            // Сначала обрабатываем добавление новых команд и обновление существующих команд
+            foreach (var teamSetting in teams)
+            {
+                if (string.IsNullOrWhiteSpace(teamSetting.Id))
+                    // Если Id пустое, добавляем новую команду
+                    AddTeam(teamSetting.Name);
+                else
+                    // Если Id заполнено, пытаемся найти существующую команду и обновить ее
+                    EditTeam(teamSetting.Id, teamSetting.Name);
+            }
+
+            // Теперь удаляем команды, которые не пришли в списке
+            var teamIds = teams.Where(t => !string.IsNullOrWhiteSpace(t.Id)).Select(t => t.Id).ToList();
+            var teamsToDelete = Teams.Where(t => !teamIds.Contains(t.Id)).ToList();
+
+            foreach (var team in teamsToDelete)
+                DeleteTeam(team.Id);
+        }
+
+        public void EditTeam(string id, string name)
+        {
+            var team = Teams.FirstOrDefault(x => x.Id == id);
+
+            if (team == null)
+                return;
+
+            if (!string.IsNullOrWhiteSpace(name))
+                team.Name = name;
+        }
+
+        public void AddTeam(string name)
+        {
+            var team = Teams.FirstOrDefault(x => x.Name == name);
+
+            if (team != null)
+                return;
+
+            Teams.Add(new Team { Name = name });
+        }
+
+        public void DeleteTeam(string id)
+        {
+            var team = Teams.FirstOrDefault(x => x.Id == id);
+
+            if (team == null)
+                return;
+
+            Teams.Remove(team);
         }
     }
 }

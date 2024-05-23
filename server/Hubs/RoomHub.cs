@@ -64,6 +64,32 @@ namespace alias.Server.Hubs
             return SuccessResponse(room);
         }
 
+        [HubMethodName("SaveRoomSettings")]
+        public async Task<JsonResult> SaveRoomSettings(Settings settings)
+        {
+            if (settings == null || settings.roomSettings == null)
+                return ErrorResponse("settings null");
+
+            var room = SharedData.rooms.FirstOrDefault(x => x.Id == settings.roomId);
+
+            if (room == null)
+                return ErrorResponse("Комната не найдена");
+
+            if (int.TryParse(settings.roomSettings.roundTime, out int roundTime))
+                room.RoundTime = roundTime;
+
+            if (int.TryParse(settings.roomSettings.pointsToWin, out int pointsToWin))
+                room.PointsToWin = pointsToWin;
+
+            room.ReducePoints = settings.roomSettings.reducePoints;
+
+            if (settings.roomSettings.teams != null)
+                room.UpdateTeams(settings.roomSettings.teams);
+
+            await Clients.All.SendAsync("UpdateRoom", room);
+
+            return SuccessResponse(room);
+        }
 
         private JsonResult SuccessResponse(object data = null)
         {
@@ -78,6 +104,26 @@ namespace alias.Server.Hubs
 
             return new JsonResult(response);
         }
+    }
+
+    public class Settings
+    {
+        public string roomId { get; set; }
+        public RoomSettings roomSettings { get; set; }
+    }
+
+    public class RoomSettings
+    {
+        public string roundTime { get; set; }
+        public string pointsToWin { get; set; }
+        public bool reducePoints { get; set; }
+        public List<TeamSettings> teams { get; set; }
+    }
+
+    public class TeamSettings
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class ClientRequest

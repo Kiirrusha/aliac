@@ -1,6 +1,7 @@
 using alias.Server.Data;
 using alias.Server.Models;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace alias.Server.Controllers
 {
@@ -32,6 +33,17 @@ namespace alias.Server.Controllers
             SharedData.rooms.Add(room);
 
             return Ok(SharedData.rooms);
+        }
+
+        [HttpGet("GetRoom")]
+        public async Task<JsonResult> GetRoom(string roomId)
+        {
+            var room = SharedData.rooms.FirstOrDefault(x => x.Id == roomId);
+
+            if (room == null)
+                return new JsonResult(new { status = "error", error = "Комната не найдена" });
+
+            return new JsonResult(new { status = "success", data = room });
         }
     }
 }

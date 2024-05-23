@@ -35,7 +35,7 @@ export class SocketStore {
       const result = await this.connection.invoke("JoinRoom", body);
 
       if (result.value.status === "success") {
-        toast.success("Успешный вход в комнату");
+        //toast.success("Успешный вход в комнату");
         this.rootStore.room = result.value.data;
       }
 
@@ -121,15 +121,16 @@ export class SocketStore {
 
   saveRoomSettings = async (roomSettings: RoomSettings) => {
     if (!this.rootStore.room) return;
-    const body = {
-      data: {
-        roomId: this.rootStore.room?.id,
-        user_name: this.rootStore.userStore.user.name,
-        room_settings: roomSettings,
-      },
+    const settings = {
+      roomId: this.rootStore.room?.id,
+      roomSettings: {
+        roundTime: roomSettings.roundTime,
+        pointsToWin: roomSettings.pointsToWin,
+        reducePoints: roomSettings.reducePoints,
+      }
     };
 
-    const result = await this.connection.invoke("SaveRoomSettings", body);
+    const result = await this.connection.invoke("SaveRoomSettings", settings);
 
     if (result.value.status === "success") {
       toast.success("Сохранено");
