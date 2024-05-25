@@ -18,7 +18,9 @@ export class SocketStore {
       })
       .build();
 
-    this.connection.start();
+    this.connection.start().then(() => {
+      rootStore.isLoaded = true;
+    });
   }
 
   joinRoom = async (roomId: string) => {
@@ -127,7 +129,7 @@ export class SocketStore {
         roundTime: roomSettings.roundTime,
         pointsToWin: roomSettings.pointsToWin,
         reducePoints: roomSettings.reducePoints,
-      }
+      },
     };
 
     const result = await this.connection.invoke("SaveRoomSettings", settings);

@@ -13,17 +13,19 @@ export class RootStore {
 
   room: Room | null = null;
 
+  isLoaded: boolean;
+
   constructor() {
     makeAutoObservable(this);
     this.userStore = new UserStore(this);
     this.socketStore = new SocketStore(this);
+    this.isLoaded = false;
 
     this.getRooms();
 
-
     this.socketStore.connection.on("UpdateRoom", (room) => {
       this.room = room;
-    })
+    });
   }
 
   getRooms = async () => {

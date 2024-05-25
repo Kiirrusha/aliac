@@ -15,6 +15,7 @@ import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 import icon from "../../assets/svg/Icon.svg";
 import { TeamComponent } from "./Team/TeamComponent";
+import { toJS } from "mobx";
 
 export const Room: FC = observer(() => {
   const room = rootStore.room;
@@ -26,6 +27,7 @@ export const Room: FC = observer(() => {
   if (!room) throw new Error("комната не найдена");
 
   const { teams, spectators } = room;
+  console.log(toJS(room));
 
   const spectatorsComponents = spectators.map((spectator) => (
     <Box key={spectator.name}>

@@ -9,9 +9,10 @@ export const RoomLayout = observer(() => {
   const { roomId } = useParams();
 
   useEffect(() => {
+    console.log(room);
     if (!room && roomId) rootStore.socketStore.joinRoom(roomId!);
   }, []);
-  console.log(room);
+
   if (!room) return <p>loading...</p>;
 
   return <Outlet />;

@@ -19,6 +19,5 @@ export interface Room {
 
   pointsToWin: number | null;
   roundTime: number;
-  rounds: number | null;
+  reducePoints: boolean;
 }
-

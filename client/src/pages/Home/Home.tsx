@@ -15,7 +15,7 @@ export const Home: FC = observer(() => {
         Доступные комнаты
       </Title>
       <Rooms />
-      <Stack w={"25%"} pb={"32px"}>
+      <Stack pb={"24px"}>
         <CustomButton variant="main" onClick={rootStore.addRoom}>
           Создать комнату
         </CustomButton>

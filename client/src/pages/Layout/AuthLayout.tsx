@@ -8,6 +8,7 @@ import { rootStore } from "src/stores/RootStore";
 
 export const AuthLayout: FC = observer(() => {
   const { user, logout } = rootStore.userStore;
+  if (!rootStore.isLoaded) return "...loading";
 
   return (
     <AppShell header={{ height: 60 }} padding="md">
