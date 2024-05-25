@@ -8,26 +8,26 @@ import {
   Title,
 } from "@mantine/core";
 import { observer } from "mobx-react-lite";
-import { FC, useEffect } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { FC } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { teamsColors } from "src/shared/constants/general";
 import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 import icon from "../../assets/svg/Icon.svg";
 import { TeamComponent } from "./Team/TeamComponent";
-import { toJS } from "mobx";
 
 export const Room: FC = observer(() => {
-  const room = rootStore.room;
+  const {room, userStore} = rootStore;
   const params = useParams();
   const navigate = useNavigate();
 
-  const { roomId } = useParams();
+
 
   if (!room) throw new Error("комната не найдена");
 
+
+
   const { teams, spectators } = room;
-  console.log(toJS(room));
 
   const spectatorsComponents = spectators.map((spectator) => (
     <Box key={spectator.name}>
@@ -43,12 +43,11 @@ export const Room: FC = observer(() => {
             Команды
           </Title>
         </Box>
-        <Box flex={1} style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Link to={`/room/${params.roomId}/settings`}>
-            <CustomButton variant="transparent" p={0}>
-              <img key="icon" src={icon} alt="Icon" />
-            </CustomButton>
-          </Link>
+         <Box flex={1} style={{ display: "flex", justifyContent: "flex-end", alignItems: "center"}}>
+          {/* TODO заменит на admin name */}
+          {room.name === userStore.user.name && <Link to={`/room/${params.roomId}/settings`} style={{ display: "flex", alignItems: "center" }}>
+            <img src={icon} alt="" />
+          </Link>}
         </Box>
       </Group>
       <SimpleGrid cols={4}>

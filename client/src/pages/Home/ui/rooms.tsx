@@ -1,4 +1,4 @@
-import { Group, List } from "@mantine/core";
+import { Group, List, Text } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +31,9 @@ export const Rooms: FC = observer(() => {
             borderRadius: "28px",
           }}
         >
-          <List c={"white"} listStyleType="none">
-            {room.id}
-          </List>
+          <Text c={"white"} >
+            {room.name}
+          </Text>
           <CustomButton
             onClick={async () => {
               await socketStore.joinRoom(room.id);

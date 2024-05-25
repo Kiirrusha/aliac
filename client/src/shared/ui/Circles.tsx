@@ -1,5 +1,5 @@
 import { FC } from "react";
-import s from "./RoomSettings.module.scss";
+import s from "./Circles.module.scss";
 
 type CircleWithNumberProps = {
   number: number;

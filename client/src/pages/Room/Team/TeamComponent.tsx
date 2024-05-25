@@ -2,7 +2,7 @@ import { Team } from "../../../../../shared/types";
 import { rootStore } from "src/stores/RootStore";
 import { observer } from "mobx-react-lite";
 import { Avatar, Center, Paper, Stack, Text, Title } from "@mantine/core";
-import { CircleWithNumber } from "src/pages/RoomSettings/RoomSettings.styled";
+import { CircleWithNumber } from "src/shared/ui/Circles";
 import avatar from "./Avatar.svg";
 interface Props {
   team: Team;

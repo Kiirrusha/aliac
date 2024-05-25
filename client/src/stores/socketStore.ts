@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { RootStore } from "./RootStore";
 
 import * as SignalR from "@microsoft/signalr";
@@ -123,14 +123,19 @@ export class SocketStore {
 
   saveRoomSettings = async (roomSettings: RoomSettings) => {
     if (!this.rootStore.room) return;
+
     const settings = {
       roomId: this.rootStore.room?.id,
       roomSettings: {
         roundTime: roomSettings.roundTime,
         pointsToWin: roomSettings.pointsToWin,
         reducePoints: roomSettings.reducePoints,
+        teams: toJS(roomSettings.teams),
       },
     };
+
+    console.log(settings)
+
 
     const result = await this.connection.invoke("SaveRoomSettings", settings);
 
@@ -143,4 +148,6 @@ export class SocketStore {
       return;
     }
   };
+
+  
 }

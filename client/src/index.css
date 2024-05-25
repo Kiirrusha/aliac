@@ -1,5 +1,16 @@
+@keyframes animation {
+  0% {
+    background-position: 0% 0%;
+  }
+
+
+  100% {
+    background-position: 10000% 30000%;
+  }
+}
 body {
+  animation: animation 3000s ease infinite;
+
   background-image: url("./assets/img/bg.png");
-  background-position: center;
-  background-size: contain;
+
 }

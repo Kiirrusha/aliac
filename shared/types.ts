@@ -4,6 +4,7 @@ export interface User {
 }
 
 export interface Team {
+  id?: string;
   name: string;
   players: User[];
   leader: User | null;

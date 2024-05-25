@@ -9,7 +9,6 @@ export const RoomLayout = observer(() => {
   const { roomId } = useParams();
 
   useEffect(() => {
-    console.log(room);
     if (!room && roomId) rootStore.socketStore.joinRoom(roomId!);
   }, []);
 

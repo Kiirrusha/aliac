@@ -5,9 +5,16 @@ export interface WordKit {
 }
 
 export type WordKits = WordKit[];
+
+
+
 export interface RoomSettings {
   roundTime: string;
   pointsToWin: string;
   reducePoints: boolean;
-  teamNames: string[];
+  teams: TeamsSettings[];
+}
+interface TeamsSettings {
+  name: string;
+  id: string | undefined;
 }

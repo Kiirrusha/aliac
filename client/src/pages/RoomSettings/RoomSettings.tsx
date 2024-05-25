@@ -8,53 +8,33 @@ import {
   Title,
 } from "@mantine/core";
 import { observer, useLocalObservable } from "mobx-react-lite";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Link, useParams } from "react-router-dom";
+import { teamsColors } from "src/shared/constants/general";
 import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 import exit from "./../../assets/svg/exit.svg";
-import { RoomSettingTeams } from "./RoomSettingTeams";
-import { CircleAddTeam, CircleWithNumber } from "./RoomSettings.styled";
-import { teamsColors } from "src/shared/constants/general";
+import { CircleAddTeam, CircleWithNumber } from "../../shared/ui/Circles";
 
 export const RoomSettings: FC = observer(() => {
   const room = rootStore.room;
 
   if (!room) throw new Error("не найдена комната");
   const params = useParams();
-  // const [teamNames, setTeamNames] = useState(
-  //   room.teams.map((team) => {
-  //     return team.name;
-  //   })
-  // );
-
-  // const changeTeamName = (index: number, newName: string) => {
-  //   setTeamNames(
-  //     teamNames.map((name, i) => {
-  //       if (i === index) return newName;
-  //       return name;
-  //     })
-  //   );
-  // };
   const controller = useLocalObservable(() => ({
     roundTimeCollection: ["30", "60", "90"],
     pointsToWinCollection: ["10", "25", "50", "75", "100"],
     reducePoints: room.reducePoints,
     currentRoundTime: room.roundTime.toString(),
     currentPointsToWin: room.pointsToWin?.toString() || "50",
-    teamNames: room?.teams.map((team) => {
-      return team.name;
+    teams: room.teams.map((team) => {
+      return { name: team.name, id: team.id };
     }),
-    teamOne: room?.teams?.[0].name,
-    teamTwo: room?.teams?.[1].name,
-    teamThree: room?.teams?.[2]?.name,
-    teamFour: room?.teams?.[3]?.name,
     deleteTeam() {
-      this.teamNames.pop();
-      console.log(this.teamNames);
+      this.teams.pop();
     },
     addTeam() {
-      this.teamNames = [...this.teamNames, `Team ${this.teamNames.length + 1}`];
+      this.teams = [...this.teams, { name: `Team ${this.teams.length + 1}`, id: Math.random().toString() }];
     },
   }));
 
@@ -63,14 +43,33 @@ export const RoomSettings: FC = observer(() => {
       pointsToWin: controller.currentPointsToWin,
       roundTime: controller.currentRoundTime,
       reducePoints: controller.reducePoints,
-      teamNames: [
-        controller.teamOne,
-        controller.teamTwo,
-        controller.teamThree,
-        controller.teamFour,
-      ],
+      teams: controller.teams,
     });
   };
+
+
+  const inputsComps = controller.teams.map((team, i) => {
+    return (
+      <Stack align="center" gap={"xs"} key={i}>
+        <CircleWithNumber
+          number={i + 1}
+          backgroundColor={teamsColors[i]}
+          // debug
+          // hasCloseButton={i >= 2 && i === controller.teams.length - 1}
+          hasCloseButton={ i === controller.teams.length - 1}
+          // 
+          onClick={() => controller.deleteTeam()}
+        />
+        <Input
+          w={"120px"}
+          value={team.name}
+          onChange={(event) => {
+            controller.teams[i].name = event.target.value;
+          }}
+        />
+      </Stack>
+    );
+  })
 
   return (
     <>
@@ -91,71 +90,12 @@ export const RoomSettings: FC = observer(() => {
           </Box>
         </Group>
         <Group align="start">
-          <Stack align="center" gap={"xs"}>
-            <CircleWithNumber
-              number={1}
-              backgroundColor={teamsColors[0]}
-              hasCloseButton={false}
-            />
-            <Input
-              w={"120px"}
-              value={controller.teamOne}
-              onChange={(event) => {
-                controller.teamOne = event.target.value;
-              }}
-            />
-          </Stack>
-          <Stack align="center" gap={"xs"}>
-            <CircleWithNumber
-              number={2}
-              backgroundColor={teamsColors[1]}
-              hasCloseButton={false}
-            />
-            <Input
-              w={"120px"}
-              value={controller.teamTwo}
-              onChange={(event) => {
-                controller.teamTwo = event.target.value;
-              }}
-            />
-          </Stack>
-          {controller.teamThree && (
-            <Stack align="center" gap={"xs"} key={controller.teamNames[2]}>
-              <CircleWithNumber
-                number={3}
-                backgroundColor={teamsColors[2]}
-                hasCloseButton={false}
-              />
-              <Input
-                w={"120px"}
-                value={controller.teamThree}
-                onChange={(event) => {
-                  controller.teamThree = event.target.value;
-                }}
-              />
-            </Stack>
-          )}
-          {controller.teamFour && (
-            <Stack align="center" gap={"xs"} key={controller.teamNames[3]}>
-              <CircleWithNumber
-                number={4}
-                backgroundColor={teamsColors[3]}
-                hasCloseButton={false}
-              />
-              <Input
-                w={"120px"}
-                value={controller.teamFour}
-                onChange={(event) => {
-                  controller.teamFour = event.target.value;
-                }}
-              />
-            </Stack>
-          )}
-          {/* {controller.teamNames.length < 4 && (
+          {inputsComps}
+          {controller.teams.length < 4 && (
             <Stack align="center" gap={0}>
               <CircleAddTeam onClick={controller.addTeam} />
             </Stack>
-          )} */}
+          )}
         </Group>
         <Stack w={"100%"}>
           <Title order={3}>Длительность раунда (c)</Title>
