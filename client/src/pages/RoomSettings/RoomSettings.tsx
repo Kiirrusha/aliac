@@ -15,6 +15,7 @@ import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 import exit from "./../../assets/svg/exit.svg";
 import { CircleAddTeam, CircleWithNumber } from "./RoomSettings.styled";
+import { RoomSettingTeams } from "./RoomSettingTeams";
 
 export const RoomSettings: FC = observer(() => {
   const room = rootStore.room;
@@ -53,9 +54,6 @@ export const RoomSettings: FC = observer(() => {
     });
   };
 
-  // const teamsComponents = useMemo(() => {
-  //   return , [controller.teamNames]);
-
   return (
     <>
       <Stack justify="space-between" w={"100%"} h={"100%"}>
@@ -75,26 +73,13 @@ export const RoomSettings: FC = observer(() => {
           </Box>
         </Group>
         <Group align="start">
-          {controller.teamNames.map((teamName, i) => (
-            <Stack align="center" gap={"xs"} key={teamName}>
-              <CircleWithNumber
-                number={i + 1}
-                backgroundColor={teamsColors[i]}
-                hasCloseButton={
-                  controller.teamNames.length >= 3 &&
-                  i === controller.teamNames.length - 1
-                }
-                onClick={controller.deleteTeam}
-              />
-              <Input
-                w={"120px"}
-                value={teamName}
-                onChange={(event) => {
-                  controller.changeTeamName(i, event.target.value);
-                }}
-              />
-            </Stack>
-          ))}
+          <RoomSettingTeams
+            amountTeams={controller.teamNames.length}
+            teamNames={controller.teamNames}
+            onClick={controller.deleteTeam}
+            onChange={controller.changeTeamName}
+          />
+          <Stack></Stack>
           {controller.teamNames.length < 4 && (
             <Stack align="center" gap={0}>
               <CircleAddTeam onClick={controller.addTeam} />

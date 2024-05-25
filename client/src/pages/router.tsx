@@ -7,6 +7,22 @@ import { AuthLayout } from "./Layout/AuthLayout";
 import { WithPaper } from "./Layout/WithPaper";
 import { RoomSettings } from "./RoomSettings/RoomSettings";
 import { WordKit } from "./WordKit/WordKit";
+import { RoomLayout } from "./Room/RoomLayout";
+
+const roomRoutes = [
+  {
+    path: "room/:roomId",
+    element: <Room />,
+  },
+  {
+    path: "room/:roomId/settings",
+    element: <RoomSettings />,
+  },
+  {
+    path: "room/:roomId/word-kit",
+    element: <WordKit />,
+  },
+];
 
 export const router = createBrowserRouter([
   {
@@ -23,16 +39,8 @@ export const router = createBrowserRouter([
                 element: <Home />,
               },
               {
-                path: "room/:roomId",
-                element: <Room />,
-              },
-              {
-                path: "room/:roomId/settings",
-                element: <RoomSettings />,
-              },
-              {
-                path: "room/:roomId/word-kit",
-                element: <WordKit />,
+                element: <RoomLayout />,
+                children: roomRoutes,
               },
             ],
           },

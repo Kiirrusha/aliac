@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { teamsColors } from "src/shared/constants/general";
 import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
@@ -19,14 +19,11 @@ import { TeamComponent } from "./Team/TeamComponent";
 export const Room: FC = observer(() => {
   const room = rootStore.room;
   const params = useParams();
+  const navigate = useNavigate();
 
   const { roomId } = useParams();
 
-  useEffect(() => {
-    if (!rootStore.room && roomId) rootStore.socketStore.joinRoom(roomId!);
-  }, []);
-
-  if (!room) return <p>loading...</p>;
+  if (!room) throw new Error("комната не найдена");
 
   const { teams, spectators } = room;
 
@@ -79,7 +76,10 @@ export const Room: FC = observer(() => {
       <Center mt={"auto"}>
         <CustomButton
           variant="main"
-          onClick={() => rootStore.socketStore.leaveRoom()}
+          onClick={() => {
+            rootStore.socketStore.leaveRoom();
+            navigate("/");
+          }}
         >
           Покинуть комнату
         </CustomButton>
