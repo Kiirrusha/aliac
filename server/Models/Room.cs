@@ -58,8 +58,12 @@ namespace alias.Server.Models
             foreach (var teamSetting in teams)
             {
                 if (string.IsNullOrWhiteSpace(teamSetting.Id))
+                {
                     // Если Id пустое, добавляем новую команду
-                    AddTeam(teamSetting.Name);
+                    var id = AddTeam(teamSetting.Name);
+
+                    teamSetting.Id = id;
+                }
                 else
                     // Если Id заполнено, пытаемся найти существующую команду и обновить ее
                     EditTeam(teamSetting.Id, teamSetting.Name);
@@ -84,14 +88,17 @@ namespace alias.Server.Models
                 team.Name = name;
         }
 
-        public void AddTeam(string name)
+        public string AddTeam(string name)
         {
             var team = Teams.FirstOrDefault(x => x.Name == name);
 
             if (team != null)
-                return;
+                return team.Id;
 
-            Teams.Add(new Team { Name = name });
+            var newTeam = new Team { Name = name };
+            Teams.Add(newTeam);
+
+            return newTeam.Id;
         }
 
         public void DeleteTeam(string id)
