@@ -9,9 +9,8 @@ namespace alias.Server.Models
         public List<Team> Teams { get; set; } = new();
         public List<User> Spectators { get; set; } = new();
 
-        public int? PointsToWin { get; set; }
-        public int RoundTime { get; set; }
-        public int? Rounds { get; set; }
+        public int? PointsToWin { get; set; } = 50;
+        public int RoundTime { get; set; } = 60;
         public bool ReducePoints { get; set; }
 
         public Room()
