@@ -1,0 +1,10 @@
+#!/bin/bash
+
+chmod +x ./start
+mydir=$(pwd)
+
+cd $mydir/server 
+dotnet run &
+
+cd $mydir/client
+npm run dev
