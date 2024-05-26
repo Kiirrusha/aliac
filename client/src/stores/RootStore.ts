@@ -3,11 +3,14 @@ import axios from "axios";
 import { UserStore } from "./userStore";
 import { SocketStore } from "./socketStore";
 import { Room } from "src/shared/types/general";
+import { GameStore } from "./GameStore";
 
 export class RootStore {
   userStore: UserStore;
 
   socketStore;
+
+  gameStore;
 
   rooms!: Room[];
 
@@ -19,6 +22,7 @@ export class RootStore {
     makeAutoObservable(this);
     this.userStore = new UserStore(this);
     this.socketStore = new SocketStore(this);
+    this.gameStore = new GameStore(this);
     this.isLoaded = false;
 
     this.getRooms();

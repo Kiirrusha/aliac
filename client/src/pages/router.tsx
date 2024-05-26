@@ -8,6 +8,7 @@ import { WithPaper } from "./Layout/WithPaper";
 import { RoomSettings } from "./RoomSettings/RoomSettings";
 import { WordKit } from "./WordKit/WordKit";
 import { RoomLayout } from "./Room/RoomLayout";
+import { Game } from "./Game/Game";
 
 const roomRoutes = [
   {
@@ -21,6 +22,10 @@ const roomRoutes = [
   {
     path: "room/:roomId/word-kit",
     element: <WordKit />,
+  },
+  {
+    path: "room/:roomId/game",
+    element: <Game />,
   },
 ];
 

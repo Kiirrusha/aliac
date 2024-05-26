@@ -17,15 +17,11 @@ import icon from "../../assets/svg/Icon.svg";
 import { TeamComponent } from "./Team/TeamComponent";
 
 export const Room: FC = observer(() => {
-  const {room, userStore} = rootStore;
+  const { room, userStore } = rootStore;
   const params = useParams();
   const navigate = useNavigate();
 
-
-
   if (!room) throw new Error("комната не найдена");
-
-
 
   const { teams, spectators } = room;
 
@@ -43,11 +39,23 @@ export const Room: FC = observer(() => {
             Команды
           </Title>
         </Box>
-         <Box flex={1} style={{ display: "flex", justifyContent: "flex-end", alignItems: "center"}}>
+        <Box
+          flex={1}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
           {/* TODO заменит на admin name */}
-          {room.name === userStore.user.name && <Link to={`/room/${params.roomId}/settings`} style={{ display: "flex", alignItems: "center" }}>
-            <img src={icon} alt="" />
-          </Link>}
+          {room.name === userStore.user.name && (
+            <Link
+              to={`/room/${params.roomId}/settings`}
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <img src={icon} alt="" />
+            </Link>
+          )}
         </Box>
       </Group>
       <SimpleGrid cols={4}>
