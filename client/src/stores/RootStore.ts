@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
-import { Room } from "../../../shared/types";
 import axios from "axios";
 import { UserStore } from "./userStore";
 import { SocketStore } from "./socketStore";
+import { Room } from "src/shared/types/general";
 
 export class RootStore {
   userStore: UserStore;

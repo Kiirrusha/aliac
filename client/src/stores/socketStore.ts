@@ -37,7 +37,6 @@ export class SocketStore {
       const result = await this.connection.invoke("JoinRoom", body);
 
       if (result.value.status === "success") {
-        //toast.success("Успешный вход в комнату");
         this.rootStore.room = result.value.data;
       }
 

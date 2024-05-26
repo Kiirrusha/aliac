@@ -34,7 +34,8 @@ export const RoomSettings: FC = observer(() => {
       this.teams.pop();
     },
     addTeam() {
-      this.teams = [...this.teams, { name: `Team ${this.teams.length + 1}`, id: Math.random().toString() }];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.teams = [...this.teams, ({ name: `Team ${this.teams.length + 1}` }) as any];
     },
   }));
 
@@ -54,10 +55,7 @@ export const RoomSettings: FC = observer(() => {
         <CircleWithNumber
           number={i + 1}
           backgroundColor={teamsColors[i]}
-          // debug
-          // hasCloseButton={i >= 2 && i === controller.teams.length - 1}
-          hasCloseButton={ i === controller.teams.length - 1}
-          // 
+          hasCloseButton={i >= 2 && i === controller.teams.length - 1}
           onClick={() => controller.deleteTeam()}
         />
         <Input

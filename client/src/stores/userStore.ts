@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { User } from "../../../shared/types";
 import { RootStore } from "./RootStore";
+import { User } from "src/shared/types/general";
 
 export class UserStore {
   private userName = localStorage.getItem("user_name");
@@ -19,6 +19,7 @@ export class UserStore {
   };
 
   logout = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (this.user as any) = undefined;
     localStorage.removeItem("user_name");
   };
