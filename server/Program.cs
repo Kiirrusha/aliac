@@ -1,4 +1,5 @@
 using alias.Server.Hubs;
+using alias.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddSignalR();
+
+builder.Services.AddHostedService<PackLoaderService>();
 
 var app = builder.Build();
 

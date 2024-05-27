@@ -118,6 +118,7 @@ namespace alias.Server.Hubs
         public string pointsToWin { get; set; }
         public bool reducePoints { get; set; }
         public List<TeamSettings> teams { get; set; }
+        public List<string> Packs { get; set; }
     }
 
     public class TeamSettings

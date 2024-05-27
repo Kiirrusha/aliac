@@ -45,5 +45,32 @@ namespace alias.Server.Controllers
 
             return new JsonResult(new { status = "success", data = room });
         }
+
+        [HttpGet("GetPacks")]
+        public async Task<JsonResult> GetPacks(string roomId)
+        {
+            var room = SharedData.rooms.FirstOrDefault(x => x.Id == roomId);
+
+            if (room == null)
+                return new JsonResult(new { status = "error", error = "Комната не найдена" });
+
+            return new JsonResult(new { status = "success", data = SharedData.packs });
+        }
+
+        [HttpGet("GetPack")]
+        public async Task<JsonResult> GetPack(string roomId, string identifier)
+        {
+            var room = SharedData.rooms.FirstOrDefault(x => x.Id == roomId);
+
+            if (room == null)
+                return new JsonResult(new { status = "error", error = "Комната не найдена" });
+
+            var pack = SharedData.packs.FirstOrDefault(x => x.Identifier == identifier);
+
+            if (pack == null)
+                return new JsonResult(new { status = "error", error = "Пак не найден" });
+
+            return new JsonResult(new { status = "success", data = pack });
+        }
     }
 }
