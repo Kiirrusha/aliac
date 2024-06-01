@@ -86,6 +86,16 @@ export const Room: FC = observer(() => {
         <CustomButton
           variant="main"
           onClick={() => {
+            navigate(`/room/${params.roomId}/game`);
+          }}
+        >
+          играть
+        </CustomButton>
+      </Center>
+      <Center mt={"auto"}>
+        <CustomButton
+          variant="main"
+          onClick={() => {
             rootStore.socketStore.leaveRoom();
             navigate("/");
           }}

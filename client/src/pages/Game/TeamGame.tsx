@@ -11,7 +11,7 @@ export const TeamGame: FC<TeamProps> = ({ team, isGuess }) => {
   return (
     <Paper p={"md"}>
       <Box bg={isGuess ? "gold" : undefined}>{team.name}</Box>
-      <Text>{team.totalPoints}</Text>
+      <Text>очки: {team.totalPoints}</Text>
     </Paper>
   );
 };

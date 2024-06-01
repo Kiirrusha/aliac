@@ -34,20 +34,15 @@ export const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
-        element: <WithPaper />,
+        element: <ProtectedRoute />,
         children: [
           {
-            element: <ProtectedRoute />,
-            children: [
-              {
-                path: "/",
-                element: <Home />,
-              },
-              {
-                element: <RoomLayout />,
-                children: roomRoutes,
-              },
-            ],
+            path: "/",
+            element: <Home />,
+          },
+          {
+            element: <RoomLayout />,
+            children: roomRoutes,
           },
         ],
       },

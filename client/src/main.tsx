@@ -25,7 +25,7 @@ const theme = createTheme({
   components: {
     Title: Title.extend({
       defaultProps: {
-        c: "white",
+        c: "black",
       },
     }),
     SegmentedControl: SegmentedControl.extend({

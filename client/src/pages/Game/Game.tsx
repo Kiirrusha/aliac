@@ -1,24 +1,30 @@
-import { List, ListItem, RingProgress, Text } from "@mantine/core";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { rootStore } from "src/stores/RootStore";
-import { TeamGame } from "./TeamGame";
-import { PlayersView } from "./PlayersView";
+import { DebugerButtons } from "./DebugerButtons";
+import { StartingView } from "./StartingView";
+import { RunningView } from "./RunningView";
+import { EndingView } from "./EndingView";
+
+const pageByGameState = {
+  starting: <StartingView />,
+  running: <RunningView />,
+  waiting: <RunningView />,
+  ending: <EndingView />,
+};
 
 export const Game = observer(() => {
-  const isLeader = true;
+  const { gameState } = rootStore.gameStore;
+
   useEffect(() => {
     const dispose = rootStore.gameStore.startCountdown();
-
     return dispose;
   }, []);
-  //   if (isLeader) return (
-  //     <LeaderView />
-  //   )
 
   return (
     <>
-      <PlayersView />
+      {pageByGameState[gameState]}
+      <DebugerButtons />
     </>
   );
 });
