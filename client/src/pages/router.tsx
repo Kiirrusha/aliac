@@ -1,14 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
+import { ProtectedRoute } from "src/components/ProtectedRoute";
+import { Game } from "./Game/Game";
+import { Home } from "./Home/Home";
+import { AuthLayout } from "./Layout/AuthLayout";
 import { Login } from "./Login/Login";
 import { Room } from "./Room/Room";
-import { Home } from "./Home/Home";
-import { ProtectedRoute } from "src/components/ProtectedRoute";
-import { AuthLayout } from "./Layout/AuthLayout";
-import { WithPaper } from "./Layout/WithPaper";
+import { RoomLayout } from "./Room/RoomLayout";
 import { RoomSettings } from "./RoomSettings/RoomSettings";
 import { WordKit } from "./WordKit/WordKit";
-import { RoomLayout } from "./Room/RoomLayout";
-import { Game } from "./Game/Game";
 
 const roomRoutes = [
   {
