@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.1",
     "@mantine/core": "^7.7.1",
     "@mantine/hooks": "^7.7.1",
     "@mantine/modals": "^7.7.1",
     "@microsoft/signalr": "^8.0.0",
     "axios": "^1.6.8",
+    "gsap": "^3.12.5",
     "mobx": "^6.12.3",
     "mobx-react-lite": "^4.0.7",
     "react": "^18.2.0",
@@ -24,6 +26,7 @@
     "styled-components": "^6.1.11"
   },
   "devDependencies": {
+    "@types/gsap": "^3.0.0",
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",

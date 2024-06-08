@@ -1,4 +1,5 @@
 ﻿using alias.Server.Hubs;
+using alias.Server.ViewModels;
 
 namespace alias.Server.Models
 {
@@ -12,12 +13,24 @@ namespace alias.Server.Models
         public int? PointsToWin { get; set; } = 50;
         public int RoundTime { get; set; } = 60;
         public bool ReducePoints { get; set; }
+        public GameState GameState { get; set; } = GameState.Lobby;
+
+        public int CurrentTeamIndex { get; set; } = 0;
+        public bool IsRoundActive { get; set; } = false;
+
+        public Team CurrentTeam => Teams[CurrentTeamIndex];
 
         public Room()
         {
             Teams.Add(new Team { Name = "Team 1" });
             Teams.Add(new Team { Name = "Team 2" });
         }
+
+        public void NextTeam() => CurrentTeamIndex = (CurrentTeamIndex + 1) % Teams.Count;
+
+        public bool CheckWinCondition() => Teams.Any(team => team.TotalPoints >= PointsToWin);
+
+        public Team GetWinningTeam() => Teams.OrderByDescending(t => t.TotalPoints).FirstOrDefault();
 
         public void MoveUser(User user, string teamName = null, PlayerType joinType = PlayerType.Spectator)
         {
