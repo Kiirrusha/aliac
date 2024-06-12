@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { teamsColors } from "src/shared/constants/general";
 import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
@@ -22,6 +22,9 @@ export const Room: FC = observer(() => {
   const navigate = useNavigate();
 
   if (!room) throw new Error("комната не найдена");
+
+  if (rootStore.gameStore.gameState !== "preparing" && rootStore.gameStore.gameState) return <Navigate to={`/room/${rootStore.room?.id}/game`} />;
+
 
   const { teams, spectators } = room;
 
@@ -85,9 +88,7 @@ export const Room: FC = observer(() => {
       <Center mt={"auto"}>
         <CustomButton
           variant="main"
-          onClick={() => {
-            navigate(`/room/${params.roomId}/game`);
-          }}
+          onClick={rootStore.gameStore.startGame}
         >
           играть
         </CustomButton>

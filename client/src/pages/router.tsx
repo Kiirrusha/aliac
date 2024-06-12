@@ -11,19 +11,19 @@ import { WordKit } from "./WordKit/WordKit";
 
 const roomRoutes = [
   {
-    path: "room/:roomId",
+    path: "/room/:roomId",
     element: <Room />,
   },
   {
-    path: "room/:roomId/settings",
+    path: "/room/:roomId/settings",
     element: <RoomSettings />,
   },
   {
-    path: "room/:roomId/word-kit",
+    path: "/room/:roomId/word-kit",
     element: <WordKit />,
   },
   {
-    path: "room/:roomId/game",
+    path: "/room/:roomId/game",
     element: <Game />,
   },
 ];

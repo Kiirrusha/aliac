@@ -1,9 +1,10 @@
 import { makeAutoObservable, toJS } from "mobx";
 import { RootStore } from "./RootStore";
+import { GAME_STATE } from "src/shared/types/general";
+
+
 
 export class GameStore {
-  gameState: "starting" | "running" | "waiting" | "ending" = "starting";
-
   isTeamGuess = true;
 
   isLeader = false;
@@ -34,6 +35,11 @@ export class GameStore {
     };
   };
 
+  get gameState() {
+    if (this.rootStore.room) return GAME_STATE[this.rootStore.room.gameState as keyof typeof GAME_STATE];
+    return null;
+  }
+
   saveToLoaclStorage = () => {
     localStorage.setItem(
       "words",
@@ -62,41 +68,17 @@ export class GameStore {
     // this.saveToLoaclStorage();
   };
 
-  debugerClick = (value: "gameState" | "isTeamGuess" | "isLeader") => {
-    if (value === "gameState") {
-      if (this.gameState === "starting") return (this.gameState = "waiting");
-      if (this.gameState === "waiting") return (this.gameState = "running");
-      if (this.gameState === "running") return (this.gameState = "ending");
-      if (this.gameState === "ending") return (this.gameState = "starting");
-    }
-    if (value === "isTeamGuess") this.isTeamGuess = !this.isTeamGuess;
-    if (value === "isLeader") this.isLeader = !this.isLeader;
-    console.log(this.gameState);
+  startGame = async () => {
+    const body = this.rootStore.room?.id;
+
+    console.log(body);
+    await this.rootStore.socketStore.connection.invoke("StartGame", body);
   };
 
-  //   joinRoom = async (roomId: string) => {
-  //     const user_name = this.rootStore.userStore.user.name;
+  startRound = async () => {
+    const body = this.rootStore.room?.id;
 
-  //     try {
-  //       const body = {
-  //         data: {
-  //           roomId,
-  //           user_name,
-  //         },
-  //       };
-
-  //       const result = await this.connection.invoke("JoinRoom", body);
-
-  //       if (result.value.status === "success") {
-  //         this.rootStore.room = result.value.data;
-  //       }
-
-  //       if (result.value.status === "error") {
-  //         toast.error(result.value.error);
-  //         return;
-  //       }
-  //     } catch (error) {
-  //       console.error("Какая то ошибка:", error);
-  //     }
-  //   };
+    console.log(body);
+    await this.rootStore.socketStore.connection.invoke("StartRound", body);
+  };
 }

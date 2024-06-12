@@ -1,5 +1,4 @@
-import { Center, Paper, Stack, Text } from "@mantine/core";
-import React from "react";
+import { Center, Stack, Text } from "@mantine/core";
 
 export const EndingView = () => {
   return (

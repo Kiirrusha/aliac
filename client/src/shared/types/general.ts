@@ -1,3 +1,5 @@
+import { GAME_STATE_NUMBER } from "src/stores/GameStore";
+
 export interface WordKit {
   name: string;
   image: string;
@@ -5,8 +7,6 @@ export interface WordKit {
 }
 
 export type WordKits = WordKit[];
-
-
 
 export interface RoomSettings {
   roundTime: string;
@@ -18,7 +18,6 @@ interface TeamsSettings {
   name: string;
   id: string | undefined;
 }
-
 
 export interface User {
   name: string;
@@ -34,6 +33,8 @@ export interface Team {
 }
 
 export interface Room {
+  gameState: GAME_STATE_NUMBER;
+
   name: string;
   id: string;
   admin: User;
@@ -45,3 +46,15 @@ export interface Room {
   reducePoints: boolean;
   wordKits: WordKits;
 }
+
+export const GAME_STATE = {
+  0: "preparing",
+  1: "starting",
+  2: "waiting",
+  3: "running",
+  4: "ending",
+  5: "gameover",
+} as const;
+
+export type GAME_STATE_NUMBER = keyof typeof GAME_STATE;
+export type GAME_STATE_VALUE = (typeof GAME_STATE)[keyof typeof GAME_STATE];

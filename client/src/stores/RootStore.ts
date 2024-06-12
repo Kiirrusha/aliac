@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable, toJS } from "mobx";
 import axios from "axios";
 import { UserStore } from "./userStore";
 import { SocketStore } from "./socketStore";
@@ -26,8 +26,19 @@ export class RootStore {
     this.isLoaded = false;
 
     this.getRooms();
+    autorun(() => {
+      console.log(toJS(this.room));
+    })
 
     this.socketStore.connection.on("UpdateRoom", (room) => {
+      this.room = room;
+    });
+    this.socketStore.connection.on("RoundStarted", (room) => {
+      console.log("RoundStarted", room);
+      this.room = room;
+    });
+    this.socketStore.connection.on("RoundEnded", (room) => {
+      console.log("RoundEnded", room);
       this.room = room;
     });
   }
