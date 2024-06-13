@@ -23,8 +23,7 @@ export const Room: FC = observer(() => {
 
   if (!room) throw new Error("комната не найдена");
 
-  if (rootStore.gameStore.gameState !== "preparing" && rootStore.gameStore.gameState) return <Navigate to={`/room/${rootStore.room?.id}/game`} />;
-
+  // if (rootStore.gameStore.gameState !== "preparing" && rootStore.gameStore.gameState) return <Navigate to={`/room/${rootStore.room?.id}/game`} />;
 
   const { teams, spectators } = room;
 
@@ -86,10 +85,7 @@ export const Room: FC = observer(() => {
         </Center>
       </Stack>
       <Center mt={"auto"}>
-        <CustomButton
-          variant="main"
-          onClick={rootStore.gameStore.startGame}
-        >
+        <CustomButton variant="main" onClick={rootStore.gameStore.startGame}>
           играть
         </CustomButton>
       </Center>

@@ -1,13 +1,17 @@
-import { AppShell, Container, Group } from "@mantine/core";
+import { AppShell, AppShellFooter, Container, Group } from "@mantine/core";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "src/components/Logo";
 import { CustomButton } from "src/shared/ui/CustomButton";
 import { rootStore } from "src/stores/RootStore";
 
 export const AuthLayout: FC = observer(() => {
   const { user, logout } = rootStore.userStore;
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const isFooterVisible = pathname.includes("/rules");
+
   if (!rootStore.isLoaded) return "...loading";
 
   return (
@@ -22,12 +26,22 @@ export const AuthLayout: FC = observer(() => {
                 <CustomButton variant="main" px={48} onClick={logout}>
                   logout
                 </CustomButton>
-                <CustomButton variant="transparent" c={"black"} p={0}>
+                <CustomButton
+                  variant="transparent"
+                  c={"black"}
+                  p={0}
+                  onClick={() => navigate("/rules")}
+                >
                   Правила
                 </CustomButton>
               </Group>
             ) : (
-              <CustomButton variant="transparent" c={"black"} p={0}>
+              <CustomButton
+                variant="transparent"
+                c={"black"}
+                p={0}
+                onClick={() => navigate("/rules")}
+              >
                 Правила
               </CustomButton>
             )}

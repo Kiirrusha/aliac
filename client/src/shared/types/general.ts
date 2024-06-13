@@ -1,5 +1,3 @@
-import { GAME_STATE_NUMBER } from "src/stores/GameStore";
-
 export interface WordKit {
   name: string;
   image: string;

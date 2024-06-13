@@ -15,7 +15,7 @@ import {
 
 const theme = createTheme({
   defaultRadius: "lg",
-  fontFamily: "K2D, Montserrat",
+  fontFamily: "Montserrat",
   fontSmoothing: true,
   headings: {
     sizes: {

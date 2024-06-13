@@ -1,31 +1,30 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { rootStore } from "src/stores/RootStore";
-import { DebugerButtons } from "./DebugerButtons";
-import { StartingView } from "./StartingView";
-import { RunningView } from "./RunningView";
-import { EndingView } from "./EndingView";
+
 import { Navigate } from "react-router-dom";
-import { GAME_STATE, GAME_STATE_VALUE } from "src/shared/types/general";
+import { StartingView } from "./PagesView/StartingView";
+import { RunningView } from "./PagesView/RunningView";
+import { EndingView } from "./PagesView/EndingView";
+import { Room } from "./Room";
 
 const pageByGameState = {
+  preparing: <Room />,
   starting: <StartingView />,
-  running: <RunningView />,
   waiting: <RunningView />,
+  running: <RunningView />,
   ending: <EndingView />,
+  gameover: <EndingView />,
 };
 
-export const Game = observer(() => {
+export const DistributorRoomView = observer(() => {
   const { gameState } = rootStore.gameStore;
+  if (gameState === null) return <Navigate to={`/`} />;
 
   useEffect(() => {
     const dispose = rootStore.gameStore.startCountdown();
     return dispose;
   }, []);
-
-  if (gameState === null) return <Navigate to={`/`} />;
-
-  if (gameState === "preparing") return <Navigate to={`/room/${rootStore.room?.id}`} />;
 
   return (
     <>
