@@ -14,11 +14,10 @@ import { useRef, useState } from "react";
 import { rootStore } from "src/stores/RootStore";
 
 export const LeaderView = observer(() => {
-  const { teams, roundTime } = rootStore.room!;
-  const { countdown, gameState, words, roundScore, onNoClick, onYesClick } =
-    rootStore.gameStore;
+  const { roundTime } = rootStore.room!;
+  const { countdown, words, onNoClick, onYesClick } = rootStore.gameStore;
   const percent = (countdown * 100) / roundTime;
-  const isTeamGuess = false;
+  // const isTeamGuess = false;
   const [isDisabled, setIsDisabled] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { contextSafe } = useGSAP({ scope: ref });
